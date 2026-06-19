@@ -403,6 +403,7 @@ let state = {
   takenKeys:   new Set(),   // "date|time" strings for confirmed bookings
   allBookings: [],
   adminFilter: "all",
+  slots:       [],          // master slot list, indexed by position
 };
 
 /* ── SLOT HELPERS ── */
@@ -457,6 +458,9 @@ async function loadSlots() {
   document.getElementById("slot-loading").style.display   = "block";
   document.getElementById("slot-container").style.display = "none";
 
+  // Build and store the master slot list once
+  state.slots = getUpcomingSlots();
+
   try {
     const res = await jsonpGet(SCRIPT_URL + "?action=getBookings");
     if (res.success) {
@@ -479,18 +483,18 @@ async function loadSlots() {
 
 /* ── RENDER SLOTS ── */
 function renderSlots() {
-  const slots   = getUpcomingSlots();
-  const fridays = slots.filter(s => s.day === "Friday");
-  const sundays = slots.filter(s => s.day === "Sunday");
+  const slots   = state.slots;
+  const fridays = slots.map((s,i) => ({s,i})).filter(({s}) => s.day === "Friday");
+  const sundays = slots.map((s,i) => ({s,i})).filter(({s}) => s.day === "Sunday");
 
   function renderGroup(list) {
-    return '<div class="slot-grid">' + list.map(s => {
+    return '<div class="slot-grid">' + list.map(({s, i}) => {
       const key    = slotKey(s);
       const taken  = state.takenKeys.has(key);
-      const chosen = state.slot && slotKey(state.slot) === key;
+      const chosen = state.slot !== null && state.slot === i;
       return `
         <div class="slot-card${taken ? " taken" : ""}${chosen ? " selected" : ""}"
-             onclick="selectSlot(${escObj(s)})">
+             onclick="selectSlot(${i})">
           <div class="s-day">${s.day}</div>
           <div class="s-time">${s.time}</div>
           <div class="s-date">${s.date.toLocaleDateString("en-PH",{month:"short",day:"numeric"})}</div>
@@ -516,11 +520,13 @@ function renderSessions() {
 }
 
 /* ── SLOT / SESSION SELECTION ── */
-function selectSlot(s) {
-  // Rebuild proper Date from plain object
-  s.date = new Date(s.date);
-  state.slot = s;
+function selectSlot(i) {
+  state.slot = i;   // store the index, not the object
   renderSlots();
+}
+
+function getSelectedSlot() {
+  return state.slots[state.slot];
 }
 
 function selectSession(i) {
@@ -532,8 +538,9 @@ function selectSession(i) {
 function goReview() {
   const name  = document.getElementById("inp-name").value.trim();
   const email = document.getElementById("inp-email").value.trim();
+  const slot  = getSelectedSlot();
 
-  if (!state.slot)                        return alert("Please choose a time slot.");
+  if (state.slot === null)                return alert("Please choose a time slot.");
   if (!name)                              return alert("Please enter your name.");
   if (!email || !email.includes("@"))     return alert("Please enter a valid email address.");
   if (state.sessionIdx === null)          return alert("Please choose a session type.");
@@ -543,8 +550,8 @@ function goReview() {
     row("Name",     name),
     row("Email",    email),
     row("Session",  sess.name),
-    row("Date",     formatDate(state.slot.date)),
-    row("Time",     state.slot.time + " Manila (PHT)"),
+    row("Date",     formatDate(slot.date)),
+    row("Time",     slot.time + " Manila (PHT)"),
     row("Duration", sess.dur + " minutes"),
     document.getElementById("inp-note").value.trim()
       ? row("Prayer note", `<em>${document.getElementById("inp-note").value.trim()}</em>`)
@@ -563,6 +570,7 @@ async function submitBooking() {
   const email = document.getElementById("inp-email").value.trim();
   const note  = document.getElementById("inp-note").value.trim();
   const sess  = SESSIONS[state.sessionIdx];
+  const slot  = getSelectedSlot();
 
   btn.disabled     = true;
   btn.innerHTML    = '<i class="ti ti-loader spin"></i> Sending…';
@@ -570,8 +578,8 @@ async function submitBooking() {
   const payload = {
     action:   "book",
     name, email, note,
-    date:     formatDate(state.slot.date),
-    time:     state.slot.time,
+    date:     formatDate(slot.date),
+    time:     slot.time,
     session:  sess.name,
     duration: sess.dur,
   };
@@ -581,8 +589,8 @@ async function submitBooking() {
     const json = await res.json();
 
     if (json.success) {
-      /* ── Remove the slot immediately so it shows Taken next time ── */
-      state.takenKeys.add(slotKey(state.slot));
+      /* ── Remove the slot immediately so it shows Taken right away ── */
+      state.takenKeys.add(slotKey(slot));
 
       document.getElementById("booking-id-display").textContent = json.bookingId;
       show("step-3");
@@ -717,10 +725,6 @@ function show(stepId) {
 
 function row(k, v) {
   return `<div class="summary-row"><span class="sk">${k}</span><span class="sv">${v}</span></div>`;
-}
-
-function escObj(obj) {
-  return "'" + JSON.stringify(obj).replace(/'/g, "\\'") + "'";
 }
 
 /* ── BOOT ── */
