@@ -210,6 +210,25 @@
       background: #f0e8e2; padding: 6px 16px; border-radius: 99px;
     }
 
+    /* CALENDAR BUTTONS */
+    .cal-prompt {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--muted); margin: 22px 0 10px; font-weight: 500; text-align: left;
+    }
+    .cal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
+    .cal-btn {
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      padding: 12px 10px; border-radius: var(--br-md);
+      font-size: 13px; font-weight: 500; font-family: 'Inter', sans-serif;
+      text-decoration: none; border: 1px solid var(--border);
+      transition: all 0.15s; cursor: pointer;
+    }
+    .cal-btn-gcal { background: #4285f4; color: white; border-color: #4285f4; }
+    .cal-btn-gcal:hover { background: #3b78e7; }
+    .cal-btn-ics  { background: white; color: var(--clay); border-color: var(--border); }
+    .cal-btn-ics:hover { background: var(--clay-lt); border-color: var(--clay); }
+    .cal-btn i { font-size: 16px; }
+
     /* STATES */
     .loading-state, .empty-state {
       text-align: center; padding: 36px 0; color: var(--muted); font-size: 13px;
@@ -320,16 +339,30 @@
       <div class="success-wrap">
         <div class="success-circle"><i class="ti ti-check"></i></div>
         <p class="success-h">You're booked! 🌸</p>
-        <p class="success-sub">Check your email for a confirmation<br>and calendar invite from Chari.</p>
+        <p class="success-sub">A confirmation email with a calendar invite<br>is on its way from Chari.</p>
         <div class="booking-id" id="booking-id-display"></div>
-        <div class="verse" style="text-align:left;margin-top:22px;">
-          "For where two or three gather in my name, there am I with them."
-          <span class="verse-ref">Matthew 18:20 · NIV</span>
-        </div>
-        <button class="btn-ghost" id="btn-another">
-          <i class="ti ti-plus"></i> Book another session
-        </button>
       </div>
+
+      <p class="cal-prompt">Save to your calendar</p>
+      <div class="cal-grid">
+        <a id="cal-gcal" class="cal-btn cal-btn-gcal" target="_blank" rel="noopener">
+          <i class="ti ti-brand-google"></i> Google Calendar
+        </a>
+        <a id="cal-ics" class="cal-btn cal-btn-ics" download="dgroup-1on1.ics">
+          <i class="ti ti-calendar-down"></i> Apple / Outlook
+        </a>
+      </div>
+      <p style="font-size:11px;color:var(--muted);text-align:center;margin-top:6px;">
+        iPhone → tap Apple / Outlook &nbsp;·&nbsp; Android → tap Google Calendar
+      </p>
+
+      <div class="verse" style="margin-top:20px;">
+        "For where two or three gather in my name, there am I with them."
+        <span class="verse-ref">Matthew 18:20 · NIV</span>
+      </div>
+      <button class="btn-ghost" id="btn-another">
+        <i class="ti ti-plus"></i> Book another session
+      </button>
     </div>
 
   </div>
@@ -527,7 +560,82 @@ async function loadSlots() {
   renderSessions();
 }
 
-/* ── SHOW STEP ── */
+/* ── CALENDAR HELPERS ── */
+function parseSlotDateTime(slot, durMins) {
+  // Parse "1:00 PM" / "9:00 PM" in PHT (UTC+8)
+  const parts = slot.time.split(' ');
+  const hm    = parts[0].split(':');
+  let h       = parseInt(hm[0], 10);
+  const mins  = parseInt(hm[1], 10);
+  const ap    = parts[1].toUpperCase();
+  if (ap === 'PM' && h !== 12) h += 12;
+  if (ap === 'AM' && h === 12) h = 0;
+
+  const d = slot.date;
+  // Build local PHT datetime, then subtract 8h to get UTC
+  const startLocal = new Date(d.getFullYear(), d.getMonth(), d.getDate(), h, mins, 0);
+  const startUTC   = new Date(startLocal.getTime() - 8 * 3600000);
+  const endUTC     = new Date(startUTC.getTime() + durMins * 60000);
+  return { startUTC, endUTC };
+}
+
+function fmtUTC(dt) {
+  return dt.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+}
+
+function buildGCalLink(slot, sess, note) {
+  const { startUTC, endUTC } = parseSlotDateTime(slot, sess.dur);
+  const title   = '1-on-1 with Chari \u00b7 ' + sess.name;
+  const details = 'DGroup 1-on-1 with Chari\nSession: ' + sess.name +
+                  (note ? '\nPrayer intention: ' + note : '');
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+    '&text='     + encodeURIComponent(title) +
+    '&dates='    + fmtUTC(startUTC) + '/' + fmtUTC(endUTC) +
+    '&details='  + encodeURIComponent(details) +
+    '&location=' + encodeURIComponent('TBD (Online or In-Person)');
+}
+
+function buildICS(slot, sess, name, email, note, bookingId) {
+  const { startUTC, endUTC } = parseSlotDateTime(slot, sess.dur);
+  const uid  = 'dgroup-' + bookingId + '@chari-booking';
+  const desc = '1-on-1 with Chari \u2014 ' + sess.name +
+               (note ? '\\nPrayer intention: ' + note : '');
+  return [
+    'BEGIN:VCALENDAR', 'VERSION:2.0',
+    'PRODID:-//Chari DGroup Booking//EN',
+    'CALSCALE:GREGORIAN', 'METHOD:REQUEST',
+    'BEGIN:VEVENT',
+    'UID:'      + uid,
+    'DTSTART:'  + fmtUTC(startUTC),
+    'DTEND:'    + fmtUTC(endUTC),
+    'SUMMARY:1-on-1 with Chari \u00b7 ' + sess.name,
+    'DESCRIPTION:' + desc,
+    'ORGANIZER;CN=Chari:mailto:Chari.delacruz@gmail.com',
+    'ATTENDEE;CN=' + name + ':mailto:' + email,
+    'LOCATION:TBD (Online or In-Person)',
+    'DTSTAMP:'  + fmtUTC(new Date()),
+    'STATUS:CONFIRMED',
+    'BEGIN:VALARM', 'TRIGGER:-PT30M', 'ACTION:DISPLAY',
+    'DESCRIPTION:Your 1-on-1 with Chari starts in 30 minutes',
+    'END:VALARM',
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ].join('\r\n');
+}
+
+function wireCalendarButtons(slot, sess, name, email, note, bookingId) {
+  // Google Calendar — open in new tab
+  const gcalLink = buildGCalLink(slot, sess, note);
+  document.getElementById('cal-gcal').href = gcalLink;
+
+  // ICS — trigger download via Blob URL
+  const icsText = buildICS(slot, sess, name, email, note, bookingId);
+  const blob    = new Blob([icsText], { type: 'text/calendar;charset=utf-8' });
+  const url     = URL.createObjectURL(blob);
+  const icsBtn  = document.getElementById('cal-ics');
+  icsBtn.href   = url;
+  icsBtn.download = 'dgroup-1on1.ics';
+}
 function showStep(id) {
   document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -610,6 +718,7 @@ document.getElementById('btn-confirm').addEventListener('click', async function(
     if (json.success) {
       S.takenKeys.add(slotKey(slot));   // mark slot taken immediately
       document.getElementById('booking-id-display').textContent = json.bookingId;
+      wireCalendarButtons(slot, sess, name, email, note, json.bookingId);
       showStep('step-3');
     } else {
       alert('Booking failed: ' + (json.error || 'Unknown error.'));
