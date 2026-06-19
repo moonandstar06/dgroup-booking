@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DGroup 1-on-1 Booking · Chari</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --clay:     #c97a5e;
+      --clay-dk:  #9b4f38;
+      --clay-lt:  #fdf4f0;
+      --gold:     #c4943a;
+      --cream:    #fff9f4;
+      --text:     #2c2420;
+      --muted:    #6b5850;
+      --border:   rgba(196,148,58,0.18);
+      --br-md:    10px;
+      --br-lg:    16px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fdf8f3;
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px 16px 60px;
+    }
+
+    #app {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #c97a5e 0%, #9b4f38 100%);
+      border-radius: var(--br-lg);
+      padding: 36px 32px 30px;
+      text-align: center;
+      color: white;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 160px; height: 160px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero-ornament { font-size: 12px; letter-spacing: 8px; opacity: 0.45; margin-bottom: 10px; }
+    .hero h1 { font-family: 'Lora', serif; font-size: 26px; font-weight: 400; letter-spacing: -0.01em; }
+    .hero p  { font-size: 11px; opacity: 0.65; letter-spacing: 0.14em; text-transform: uppercase; margin-top: 7px; }
+
+    /* ── TAB NAV ── */
+    .tab-nav {
+      display: flex; gap: 4px;
+      background: #f0e8e2;
+      border-radius: 12px; padding: 4px;
+      margin-bottom: 22px;
+    }
+    .tab-btn {
+      flex: 1; padding: 9px 8px; border: none; background: transparent;
+      cursor: pointer; border-radius: 9px; font-size: 13px;
+      color: var(--muted); font-weight: 500; transition: all 0.18s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      font-family: 'Inter', sans-serif;
+    }
+    .tab-btn.active { background: white; color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+    .tab-btn i { font-size: 15px; }
+
+    /* ── VIEWS ── */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ── LABELS & FIELDS ── */
+    .label {
+      display: block; font-size: 11px; font-weight: 500;
+      color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .field { margin-bottom: 18px; }
+    .field input, .field textarea {
+      width: 100%; padding: 11px 14px; font-size: 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--br-md);
+      background: white; color: var(--text);
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .field input:focus, .field textarea:focus {
+      outline: none;
+      border-color: var(--clay);
+      box-shadow: 0 0 0 3px rgba(201,122,94,0.12);
+    }
+    .field textarea { height: 84px; resize: none; }
+
+    /* ── SLOT GRID ── */
+    .week-label {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--muted); margin: 14px 0 8px;
+    }
+    .week-label:first-child { margin-top: 0; }
+    .slot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
+    .slot-card {
+      border: 1px solid var(--border); border-radius: var(--br-md);
+      padding: 14px 13px; cursor: pointer; transition: all 0.16s;
+      background: white; position: relative;
+    }
+    .slot-card:hover:not(.taken) { border-color: var(--clay); box-shadow: 0 2px 8px rgba(201,122,94,0.14); }
+    .slot-card.selected { border: 2px solid var(--clay); background: var(--clay-lt); }
+    .slot-card.taken    { opacity: 0.38; pointer-events: none; }
+    .slot-card .s-day   { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 3px; }
+    .slot-card .s-time  { font-size: 15px; font-weight: 500; color: var(--text); }
+    .slot-card .s-date  { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .slot-card .s-badge {
+      position: absolute; top: 9px; right: 9px;
+      font-size: 10px; padding: 2px 7px; border-radius: 99px; font-weight: 500;
+    }
+    .badge-open   { background: #eaf6f1; color: #0f6e56; }
+    .badge-taken  { background: #fceaea; color: #a32d2d; }
+
+    /* ── SESSION GRID ── */
+    .session-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
+    .session-card {
+      border: 1px solid var(--border); border-radius: var(--br-md);
+      padding: 14px 13px; cursor: pointer; transition: all 0.16s; background: white;
+    }
+    .session-card:hover { border-color: var(--clay); }
+    .session-card.selected { border: 2px solid var(--clay); background: var(--clay-lt); }
+    .session-card i     { font-size: 20px; color: var(--clay); margin-bottom: 7px; display: block; }
+    .session-card .s-name { font-size: 13px; font-weight: 500; color: var(--text); }
+    .session-card .s-dur  { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+    /* ── BUTTONS ── */
+    .btn-primary {
+      width: 100%; padding: 14px; font-size: 14px; font-weight: 500;
+      background: linear-gradient(135deg, #c97a5e, #9b4f38);
+      color: white; border: none; border-radius: var(--br-md);
+      cursor: pointer; letter-spacing: 0.02em;
+      transition: opacity 0.15s, transform 0.1s;
+      font-family: 'Inter', sans-serif;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-primary:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+    .btn-ghost {
+      width: 100%; padding: 12px; font-size: 13px;
+      background: transparent; color: var(--muted);
+      border: 1px solid var(--border); border-radius: var(--br-md);
+      cursor: pointer; margin-top: 8px; font-family: 'Inter', sans-serif;
+      transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-ghost:hover { background: #f5ede8; border-color: var(--clay); }
+
+    /* ── SUMMARY ── */
+    .summary-card {
+      background: #fdf4f0; border: 1px solid var(--border);
+      border-radius: var(--br-md); overflow: hidden; margin-bottom: 18px;
+    }
+    .summary-row {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      padding: 10px 16px; border-bottom: 1px solid var(--border);
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-row .sk { font-size: 12px; color: var(--muted); white-space: nowrap; margin-right: 12px; }
+    .summary-row .sv { font-size: 13px; font-weight: 500; color: var(--text); text-align: right; }
+
+    /* ── VERSE ── */
+    .verse {
+      background: rgba(201,122,94,0.07);
+      border-left: 3px solid #e8c4b0;
+      border-radius: 0 var(--br-md) var(--br-md) 0;
+      padding: 14px 16px; margin: 18px 0;
+      font-family: 'Lora', serif; font-size: 13px;
+      color: var(--muted); font-style: italic; line-height: 1.75;
+    }
+    .verse-ref {
+      font-style: normal; font-family: 'Inter', sans-serif;
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--clay); font-weight: 500; margin-top: 6px; display: block;
+    }
+
+    /* ── SUCCESS ── */
+    .success-wrap { text-align: center; padding: 16px 0 8px; }
+    .success-circle {
+      width: 76px; height: 76px; border-radius: 50%;
+      background: linear-gradient(135deg, #c97a5e, #9b4f38);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 18px; color: white; font-size: 34px;
+    }
+    .success-circle i { font-size: 34px; }
+    .success-h { font-family: 'Lora', serif; font-size: 24px; font-weight: 400; margin-bottom: 8px; }
+    .success-sub { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .booking-id {
+      display: inline-block; margin-top: 14px;
+      font-size: 11px; letter-spacing: 0.1em; color: var(--muted);
+      background: #f0e8e2; padding: 6px 16px; border-radius: 99px;
+    }
+
+    /* ── LOADING / EMPTY ── */
+    .loading-state, .empty-state {
+      text-align: center; padding: 36px 0; color: var(--muted); font-size: 13px;
+    }
+    .spin {
+      display: inline-block; animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── ADMIN ── */
+    .admin-login { max-width: 300px; margin: 8px auto 0; }
+    .err { color: #a32d2d; font-size: 12px; margin-top: 6px; display: none; }
+
+    .filter-bar { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+    .filter-btn {
+      padding: 5px 13px; border-radius: 99px; font-size: 12px;
+      border: 1px solid var(--border); background: white;
+      cursor: pointer; color: var(--muted); font-family: 'Inter', sans-serif;
+      transition: all 0.14s;
+    }
+    .filter-btn.active { background: var(--clay); color: white; border-color: var(--clay); }
+
+    .admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .admin-header span { font-size: 15px; font-weight: 500; }
+
+    .tbl-wrap { overflow-x: auto; border-radius: var(--br-md); border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead th {
+      background: #fdf4f0; padding: 9px 13px; text-align: left;
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+      color: var(--muted); font-weight: 500; border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    tbody td { padding: 10px 13px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: #fdf8f3; }
+
+    .pill { display: inline-block; padding: 3px 9px; border-radius: 99px; font-size: 11px; font-weight: 500; }
+    .pill-green { background: #eaf6f1; color: #0a5c42; }
+    .pill-red   { background: #fceaea; color: #8a2020; }
+
+    .sub-text { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 400px) {
+      .slot-grid, .session-grid { grid-template-columns: 1fr; }
+      body { padding: 16px 12px 48px; }
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <div class="hero">
+    <div class="hero-ornament">✦ ✦ ✦</div>
+    <h1>DGroup 1-on-1</h1>
+    <p>Book a session with Chari</p>
+  </div>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" id="tab-book" onclick="showTab('book')">
+      <i class="ti ti-calendar"></i> Book a slot
+    </button>
+    <button class="tab-btn" id="tab-admin" onclick="showTab('admin-gate')">
+      <i class="ti ti-settings"></i> Admin
+    </button>
+  </div>
+
+  <!-- ══ BOOKING VIEW ══ -->
+  <div id="view-book" class="view active">
+
+    <!-- Step 1 -->
+    <div id="step-1">
+      <div class="field">
+        <span class="label">Choose a time slot</span>
+        <div id="slot-loading" class="loading-state"><i class="ti ti-loader spin"></i> Checking availability…</div>
+        <div id="slot-container" style="display:none;"></div>
+      </div>
+
+      <div class="field">
+        <span class="label">Your name</span>
+        <input type="text" id="inp-name" placeholder="Full name" autocomplete="name" />
+      </div>
+
+      <div class="field">
+        <span class="label">Email address</span>
+        <input type="email" id="inp-email" placeholder="your@email.com" autocomplete="email" />
+      </div>
+
+      <div class="field">
+        <span class="label">Session type</span>
+        <div class="session-grid" id="session-grid"></div>
+      </div>
+
+      <div class="field">
+        <span class="label">Prayer intention <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;opacity:0.7;">(optional)</span></span>
+        <textarea id="inp-note" placeholder="Share anything you'd like Chari to pray over or talk through…"></textarea>
+      </div>
+
+      <button class="btn-primary" onclick="goReview()">
+        Review booking <i class="ti ti-arrow-right"></i>
+      </button>
+    </div>
+
+    <!-- Step 2 – Review -->
+    <div id="step-2" style="display:none;">
+      <span class="label">Review your booking</span>
+      <div class="summary-card" id="summary-card"></div>
+      <div class="verse">
+        "For where two or three gather in my name, there am I with them."
+        <span class="verse-ref">Matthew 18:20 · NIV</span>
+      </div>
+      <button class="btn-primary" id="btn-confirm" onclick="submitBooking()">
+        <i class="ti ti-send"></i> Confirm &amp; send
+      </button>
+      <button class="btn-ghost" onclick="goBack()">
+        <i class="ti ti-arrow-left"></i> Go back
+      </button>
+    </div>
+
+    <!-- Step 3 – Success -->
+    <div id="step-3" style="display:none;">
+      <div class="success-wrap">
+        <div class="success-circle"><i class="ti ti-check"></i></div>
+        <p class="success-h">You're booked! 🌸</p>
+        <p class="success-sub">Check your email for a confirmation<br>and calendar invite from Chari.</p>
+        <div class="booking-id" id="booking-id-display"></div>
+        <div class="verse" style="text-align:left; margin-top:22px;">
+          "For where two or three gather in my name, there am I with them."
+          <span class="verse-ref">Matthew 18:20 · NIV</span>
+        </div>
+        <button class="btn-ghost" style="margin-top:6px;" onclick="resetForm()">
+          <i class="ti ti-plus"></i> Book another session
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /view-book -->
+
+  <!-- ══ ADMIN LOGIN VIEW ══ -->
+  <div id="view-admin-gate" class="view" style="display:none;">
+    <div class="admin-login">
+      <div class="field">
+        <span class="label">Admin password</span>
+        <input type="password" id="inp-pw" placeholder="Enter password"
+               onkeydown="if(event.key==='Enter') adminLogin()" />
+        <div class="err" id="pw-err">Incorrect password. Please try again.</div>
+      </div>
+      <button class="btn-primary" onclick="adminLogin()">
+        <i class="ti ti-lock-open"></i> Sign in
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ ADMIN DASHBOARD VIEW ══ -->
+  <div id="view-admin" class="view" style="display:none;">
+    <div class="admin-header">
+      <span>All Bookings</span>
+      <button class="btn-ghost" style="width:auto;padding:7px 14px;font-size:12px;margin-top:0;" onclick="loadAdmin()">
+        <i class="ti ti-refresh"></i> Refresh
+      </button>
+    </div>
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+      <button class="filter-btn" onclick="setFilter('Confirmed',this)">Confirmed</button>
+      <button class="filter-btn" onclick="setFilter('Cancelled',this)">Cancelled</button>
+    </div>
+    <div id="admin-body"><div class="loading-state"><i class="ti ti-loader spin"></i> Loading…</div></div>
+    <button class="btn-ghost" style="margin-top:18px;" onclick="adminLogout()">
+      <i class="ti ti-logout"></i> Sign out
+    </button>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+/* ── CONFIG ── */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzL5UCzFF_bHfurfRGguqy1j1MWc4IWx8pduwJqeLvP3UYldKQGRmuTJ17sI65LE6G2/exec";
+const ADMIN_PW   = "selah2024";
+
+const SESSIONS = [
+  { name: "Discipleship Check-in", icon: "ti-heart",      dur: 30 },
+  { name: "Prayer & Intercession",  icon: "ti-hand-stop", dur: 30 },
+  { name: "Life Coaching",          icon: "ti-bulb",       dur: 45 },
+  { name: "Bible Study",            icon: "ti-book",       dur: 45 },
+];
+
+/* ── STATE ── */
+let state = {
+  slot:        null,
+  sessionIdx:  null,
+  takenKeys:   new Set(),   // "date|time" strings for confirmed bookings
+  allBookings: [],
+  adminFilter: "all",
+};
+
+/* ── SLOT HELPERS ── */
+function getUpcomingSlots() {
+  const slots = [];
+  const today = new Date(); today.setHours(0,0,0,0);
+  const d = new Date(today);
+  let safety = 0;
+  while (slots.length < 10 && safety++ < 90) {
+    const dow = d.getDay();
+    if (dow === 5) slots.push({ day:"Friday",  time:"1:00 PM",  date: new Date(d) });
+    if (dow === 0) slots.push({ day:"Sunday",  time:"9:00 PM",  date: new Date(d) });
+    d.setDate(d.getDate() + 1);
+  }
+  return slots;
+}
+
+function formatDate(d) {
+  return d.toLocaleDateString("en-PH", {
+    weekday: "long", month: "long", day: "numeric", year: "numeric"
+  });
+}
+
+function slotKey(slot) {
+  return formatDate(slot.date) + "|" + slot.time;
+}
+
+/* ── JSONP FETCH ── */
+function jsonpGet(url) {
+  return new Promise((resolve, reject) => {
+    const cbName = "_cb" + Date.now() + Math.floor(Math.random()*1000);
+    const script = document.createElement("script");
+    const timer  = setTimeout(() => {
+      cleanup(); reject(new Error("Request timed out"));
+    }, 10000);
+
+    function cleanup() {
+      clearTimeout(timer);
+      delete window[cbName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+    }
+
+    window[cbName] = (data) => { cleanup(); resolve(data); };
+    script.onerror  = () => { cleanup(); reject(new Error("Script load error")); };
+    script.src      = url + (url.includes("?") ? "&" : "?") + "callback=" + cbName;
+    document.head.appendChild(script);
+  });
+}
+
+/* ── LOAD SLOTS ── */
+async function loadSlots() {
+  document.getElementById("slot-loading").style.display   = "block";
+  document.getElementById("slot-container").style.display = "none";
+
+  try {
+    const res = await jsonpGet(SCRIPT_URL + "?action=getBookings");
+    if (res.success) {
+      state.takenKeys = new Set(
+        (res.bookings || [])
+          .filter(b => b.status !== "Cancelled")
+          .map(b => b.date + "|" + b.time)
+      );
+    }
+  } catch (e) {
+    // Silently continue — slots will all show as open
+    console.warn("Could not load bookings:", e);
+  }
+
+  renderSlots();
+  document.getElementById("slot-loading").style.display   = "none";
+  document.getElementById("slot-container").style.display = "block";
+  renderSessions();
+}
+
+/* ── RENDER SLOTS ── */
+function renderSlots() {
+  const slots   = getUpcomingSlots();
+  const fridays = slots.filter(s => s.day === "Friday");
+  const sundays = slots.filter(s => s.day === "Sunday");
+
+  function renderGroup(list) {
+    return '<div class="slot-grid">' + list.map(s => {
+      const key    = slotKey(s);
+      const taken  = state.takenKeys.has(key);
+      const chosen = state.slot && slotKey(state.slot) === key;
+      return `
+        <div class="slot-card${taken ? " taken" : ""}${chosen ? " selected" : ""}"
+             onclick="selectSlot(${escObj(s)})">
+          <div class="s-day">${s.day}</div>
+          <div class="s-time">${s.time}</div>
+          <div class="s-date">${s.date.toLocaleDateString("en-PH",{month:"short",day:"numeric"})}</div>
+          <span class="s-badge ${taken ? "badge-taken" : "badge-open"}">${taken ? "Taken" : "Open"}</span>
+        </div>`;
+    }).join("") + "</div>";
+  }
+
+  document.getElementById("slot-container").innerHTML =
+    '<p class="week-label">Fridays · 1:00–2:00 PM PHT</p>'  + renderGroup(fridays) +
+    '<p class="week-label" style="margin-top:14px;">Sundays · 9:00–10:00 PM PHT</p>' + renderGroup(sundays);
+}
+
+/* ── RENDER SESSIONS ── */
+function renderSessions() {
+  document.getElementById("session-grid").innerHTML = SESSIONS.map((s, i) => `
+    <div class="session-card${state.sessionIdx === i ? " selected" : ""}" onclick="selectSession(${i})">
+      <i class="ti ${s.icon}"></i>
+      <div class="s-name">${s.name}</div>
+      <div class="s-dur">${s.dur} min</div>
+    </div>`
+  ).join("");
+}
+
+/* ── SLOT / SESSION SELECTION ── */
+function selectSlot(s) {
+  // Rebuild proper Date from plain object
+  s.date = new Date(s.date);
+  state.slot = s;
+  renderSlots();
+}
+
+function selectSession(i) {
+  state.sessionIdx = i;
+  renderSessions();
+}
+
+/* ── STEP NAVIGATION ── */
+function goReview() {
+  const name  = document.getElementById("inp-name").value.trim();
+  const email = document.getElementById("inp-email").value.trim();
+
+  if (!state.slot)                        return alert("Please choose a time slot.");
+  if (!name)                              return alert("Please enter your name.");
+  if (!email || !email.includes("@"))     return alert("Please enter a valid email address.");
+  if (state.sessionIdx === null)          return alert("Please choose a session type.");
+
+  const sess = SESSIONS[state.sessionIdx];
+  document.getElementById("summary-card").innerHTML = [
+    row("Name",     name),
+    row("Email",    email),
+    row("Session",  sess.name),
+    row("Date",     formatDate(state.slot.date)),
+    row("Time",     state.slot.time + " Manila (PHT)"),
+    row("Duration", sess.dur + " minutes"),
+    document.getElementById("inp-note").value.trim()
+      ? row("Prayer note", `<em>${document.getElementById("inp-note").value.trim()}</em>`)
+      : "",
+  ].join("");
+
+  show("step-2");
+}
+
+function goBack() { show("step-1"); }
+
+/* ── SUBMIT ── */
+async function submitBooking() {
+  const btn   = document.getElementById("btn-confirm");
+  const name  = document.getElementById("inp-name").value.trim();
+  const email = document.getElementById("inp-email").value.trim();
+  const note  = document.getElementById("inp-note").value.trim();
+  const sess  = SESSIONS[state.sessionIdx];
+
+  btn.disabled     = true;
+  btn.innerHTML    = '<i class="ti ti-loader spin"></i> Sending…';
+
+  const payload = {
+    action:   "book",
+    name, email, note,
+    date:     formatDate(state.slot.date),
+    time:     state.slot.time,
+    session:  sess.name,
+    duration: sess.dur,
+  };
+
+  try {
+    const res  = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+    const json = await res.json();
+
+    if (json.success) {
+      /* ── Remove the slot immediately so it shows Taken next time ── */
+      state.takenKeys.add(slotKey(state.slot));
+
+      document.getElementById("booking-id-display").textContent = json.bookingId;
+      show("step-3");
+    } else {
+      alert("Booking failed: " + (json.error || "Unknown error. Please try again."));
+      btn.disabled  = false;
+      btn.innerHTML = '<i class="ti ti-send"></i> Confirm &amp; send';
+    }
+  } catch (e) {
+    alert("Network error. Please check your connection and try again.");
+    btn.disabled  = false;
+    btn.innerHTML = '<i class="ti ti-send"></i> Confirm &amp; send';
+  }
+}
+
+/* ── RESET ── */
+function resetForm() {
+  state.slot       = null;
+  state.sessionIdx = null;
+  document.getElementById("inp-name").value  = "";
+  document.getElementById("inp-email").value = "";
+  document.getElementById("inp-note").value  = "";
+  show("step-1");
+  renderSlots();
+  renderSessions();
+}
+
+/* ── TABS ── */
+function showTab(name) {
+  ["book","admin-gate","admin"].forEach(id => {
+    const el = document.getElementById("view-" + id);
+    if (el) { el.style.display = "none"; el.classList.remove("active"); }
+  });
+  const target = document.getElementById("view-" + name);
+  if (target) { target.style.display = "block"; target.classList.add("active"); }
+
+  document.getElementById("tab-book").classList.toggle("active",  name === "book");
+  document.getElementById("tab-admin").classList.toggle("active", name !== "book");
+}
+
+/* ── ADMIN LOGIN ── */
+function adminLogin() {
+  const pw  = document.getElementById("inp-pw").value;
+  const err = document.getElementById("pw-err");
+  if (pw === ADMIN_PW) {
+    err.style.display = "none";
+    showTab("admin");
+    loadAdmin();
+  } else {
+    err.style.display = "block";
+  }
+}
+
+function adminLogout() {
+  document.getElementById("inp-pw").value = "";
+  showTab("admin-gate");
+}
+
+/* ── ADMIN DATA ── */
+let adminFilter = "all";
+function setFilter(f, btn) {
+  adminFilter = f;
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  renderAdminTable();
+}
+
+async function loadAdmin() {
+  document.getElementById("admin-body").innerHTML =
+    '<div class="loading-state"><i class="ti ti-loader spin"></i> Loading…</div>';
+  try {
+    const res = await jsonpGet(SCRIPT_URL + "?action=getBookings");
+    if (res.success) {
+      state.allBookings = res.bookings || [];
+      renderAdminTable();
+    } else {
+      document.getElementById("admin-body").innerHTML =
+        '<div class="empty-state">Could not load bookings.</div>';
+    }
+  } catch (e) {
+    document.getElementById("admin-body").innerHTML =
+      '<div class="empty-state">Error loading data. Make sure the Apps Script is deployed and accessible.</div>';
+  }
+}
+
+function renderAdminTable() {
+  const list = adminFilter === "all"
+    ? state.allBookings
+    : state.allBookings.filter(b => b.status === adminFilter);
+
+  if (!list.length) {
+    document.getElementById("admin-body").innerHTML =
+      '<div class="empty-state">No bookings found.</div>';
+    return;
+  }
+
+  const sorted = [...list].sort((a, b) => {
+    const da = new Date(a.date), db = new Date(b.date);
+    return da - db;
+  });
+
+  document.getElementById("admin-body").innerHTML =
+    '<div class="tbl-wrap"><table>' +
+    '<thead><tr><th>Member</th><th>Session</th><th>Date &amp; Time</th><th>Status</th></tr></thead>' +
+    '<tbody>' +
+    sorted.map(b => `
+      <tr>
+        <td>
+          <div style="font-weight:500;">${b.name}</div>
+          <div class="sub-text">${b.email}</div>
+        </td>
+        <td>
+          <div>${b.session}</div>
+          <div class="sub-text">${b.duration} min</div>
+        </td>
+        <td style="white-space:nowrap;">
+          <div>${b.date}</div>
+          <div class="sub-text">${b.time} PHT</div>
+        </td>
+        <td><span class="pill ${b.status==="Confirmed" ? "pill-green" : "pill-red"}">${b.status}</span></td>
+      </tr>`).join("") +
+    '</tbody></table></div>';
+}
+
+/* ── TINY HELPERS ── */
+function show(stepId) {
+  ["step-1","step-2","step-3"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = (id === stepId) ? "block" : "none";
+  });
+}
+
+function row(k, v) {
+  return `<div class="summary-row"><span class="sk">${k}</span><span class="sv">${v}</span></div>`;
+}
+
+function escObj(obj) {
+  return "'" + JSON.stringify(obj).replace(/'/g, "\\'") + "'";
+}
+
+/* ── BOOT ── */
+loadSlots();
+</script>
+</body>
+</html>
