@@ -13,36 +13,32 @@
       --clay:   #c97a5e; --clay-dk: #9b4f38; --clay-lt: #fdf4f0;
       --text:   #2c2420; --muted:   #6b5850;
       --border: rgba(196,148,58,0.2);
-      --br-md:  10px;    --br-lg:   16px;
+      --br-md:  10px; --br-lg: 16px;
     }
     body { font-family:'Inter',sans-serif; background:#fdf8f3; color:var(--text); min-height:100vh; padding:24px 16px 60px; }
     #app { max-width:540px; margin:0 auto; }
 
-    /* HERO */
     .hero { background:linear-gradient(135deg,#c97a5e,#9b4f38); border-radius:var(--br-lg); padding:36px 32px 30px; text-align:center; color:white; margin-bottom:24px; position:relative; overflow:hidden; }
     .hero::before { content:''; position:absolute; top:-40px; right:-40px; width:160px; height:160px; background:rgba(255,255,255,.06); border-radius:50%; pointer-events:none; }
     .hero-orn { font-size:12px; letter-spacing:8px; opacity:.45; margin-bottom:10px; }
     .hero h1  { font-family:'Lora',serif; font-size:26px; font-weight:400; }
     .hero p   { font-size:11px; opacity:.65; letter-spacing:.14em; text-transform:uppercase; margin-top:7px; }
 
-    /* TABS */
     .tab-nav { display:flex; gap:4px; background:#f0e8e2; border-radius:12px; padding:4px; margin-bottom:22px; }
     .tab-btn { flex:1; padding:9px 8px; border:none; background:transparent; cursor:pointer; border-radius:9px; font-size:13px; color:var(--muted); font-weight:500; transition:all .18s; display:flex; align-items:center; justify-content:center; gap:6px; font-family:'Inter',sans-serif; }
     .tab-btn.active { background:white; color:var(--text); box-shadow:0 1px 4px rgba(0,0,0,.08); }
     .tab-btn i { font-size:15px; }
 
-    /* VIEWS & STEPS */
-    .view  { display:none; } .view.active  { display:block; }
-    .step  { display:none; } .step.active  { display:block; }
+    .view { display:none; } .view.active { display:block; }
+    .step { display:none; } .step.active { display:block; }
 
-    /* FORM */
     .label { display:block; font-size:11px; font-weight:500; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; margin-bottom:8px; }
     .field { margin-bottom:18px; }
-    .field input,.field textarea { width:100%; padding:11px 14px; font-size:14px; border:1px solid var(--border); border-radius:var(--br-md); background:white; color:var(--text); font-family:'Inter',sans-serif; transition:border-color .15s,box-shadow .15s; }
-    .field input:focus,.field textarea:focus { outline:none; border-color:var(--clay); box-shadow:0 0 0 3px rgba(201,122,94,.12); }
+    .field input, .field select, .field textarea { width:100%; padding:11px 14px; font-size:14px; border:1px solid var(--border); border-radius:var(--br-md); background:white; color:var(--text); font-family:'Inter',sans-serif; transition:border-color .15s,box-shadow .15s; }
+    .field select { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b5850' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; padding-right:36px; }
+    .field input:focus, .field select:focus, .field textarea:focus { outline:none; border-color:var(--clay); box-shadow:0 0 0 3px rgba(201,122,94,.12); }
     .field textarea { height:84px; resize:none; }
 
-    /* SLOTS */
     .week-lbl { font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin:14px 0 8px; }
     .week-lbl:first-child { margin-top:0; }
     .slot-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
@@ -50,42 +46,44 @@
     .slot-card:hover:not(.taken) { border-color:var(--clay); box-shadow:0 2px 8px rgba(201,122,94,.14); }
     .slot-card.selected { border:2px solid var(--clay); background:var(--clay-lt); }
     .slot-card.taken    { opacity:.38; pointer-events:none; cursor:default; }
-    .sc-day   { font-size:10px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin-bottom:3px; }
-    .sc-time  { font-size:15px; font-weight:500; color:var(--text); }
-    .sc-date  { font-size:12px; color:var(--muted); margin-top:2px; }
+    .sc-day  { font-size:10px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin-bottom:3px; }
+    .sc-time { font-size:15px; font-weight:500; color:var(--text); }
+    .sc-date { font-size:12px; color:var(--muted); margin-top:2px; }
     .sc-badge { position:absolute; top:9px; right:9px; font-size:10px; padding:2px 7px; border-radius:99px; font-weight:500; }
     .badge-open  { background:#eaf6f1; color:#0f6e56; }
     .badge-taken { background:#fceaea; color:#a32d2d; }
 
-    /* SESSIONS */
     .session-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:4px; }
     .session-card { border:1px solid var(--border); border-radius:var(--br-md); padding:14px 13px; cursor:pointer; transition:all .16s; background:white; user-select:none; }
     .session-card:hover { border-color:var(--clay); }
     .session-card.selected { border:2px solid var(--clay); background:var(--clay-lt); }
-    .session-card i      { font-size:20px; color:var(--clay); margin-bottom:7px; display:block; }
+    .session-card i { font-size:20px; color:var(--clay); margin-bottom:7px; display:block; }
     .session-card .ss-name { font-size:13px; font-weight:500; color:var(--text); }
     .session-card .ss-dur  { font-size:11px; color:var(--muted); margin-top:3px; }
 
-    /* BUTTONS */
     .btn-primary { width:100%; padding:14px; font-size:14px; font-weight:500; background:linear-gradient(135deg,#c97a5e,#9b4f38); color:white; border:none; border-radius:var(--br-md); cursor:pointer; font-family:'Inter',sans-serif; transition:opacity .15s,transform .1s; display:flex; align-items:center; justify-content:center; gap:8px; }
     .btn-primary:hover:not(:disabled) { opacity:.9; transform:translateY(-1px); }
     .btn-primary:active { transform:translateY(0); }
     .btn-primary:disabled { opacity:.45; cursor:not-allowed; transform:none; }
     .btn-ghost { width:100%; padding:12px; font-size:13px; background:transparent; color:var(--muted); border:1px solid var(--border); border-radius:var(--br-md); cursor:pointer; margin-top:8px; font-family:'Inter',sans-serif; transition:all .15s; display:flex; align-items:center; justify-content:center; gap:6px; }
     .btn-ghost:hover { background:#f5ede8; border-color:var(--clay); }
+    .btn-sm { padding:6px 12px; font-size:12px; border-radius:8px; border:none; cursor:pointer; font-family:'Inter',sans-serif; transition:all .14s; display:inline-flex; align-items:center; gap:5px; }
+    .btn-sm-clay { background:var(--clay); color:white; }
+    .btn-sm-clay:hover { background:var(--clay-dk); }
+    .btn-sm-ghost { background:transparent; color:var(--muted); border:1px solid var(--border); }
+    .btn-sm-ghost:hover { background:#f5ede8; color:var(--clay); border-color:var(--clay); }
+    .btn-sm-danger { background:transparent; color:#a32d2d; border:1px solid rgba(163,45,45,.3); }
+    .btn-sm-danger:hover { background:#fceaea; }
 
-    /* SUMMARY */
     .summary-card { background:#fdf4f0; border:1px solid var(--border); border-radius:var(--br-md); overflow:hidden; margin-bottom:18px; }
     .sum-row { display:flex; justify-content:space-between; align-items:flex-start; padding:10px 16px; border-bottom:1px solid var(--border); }
     .sum-row:last-child { border-bottom:none; }
     .sum-row .sk { font-size:12px; color:var(--muted); white-space:nowrap; margin-right:12px; }
     .sum-row .sv { font-size:13px; font-weight:500; color:var(--text); text-align:right; }
 
-    /* VERSE */
     .verse { background:rgba(201,122,94,.07); border-left:3px solid #e8c4b0; border-radius:0 var(--br-md) var(--br-md) 0; padding:14px 16px; margin:18px 0; font-family:'Lora',serif; font-size:13px; color:var(--muted); font-style:italic; line-height:1.75; }
     .verse-ref { font-style:normal; font-family:'Inter',sans-serif; font-size:10px; text-transform:uppercase; letter-spacing:.12em; color:var(--clay); font-weight:500; margin-top:6px; display:block; }
 
-    /* SUCCESS */
     .success-wrap { text-align:center; padding:16px 0 8px; }
     .success-circle { width:76px; height:76px; border-radius:50%; background:linear-gradient(135deg,#c97a5e,#9b4f38); display:flex; align-items:center; justify-content:center; margin:0 auto 18px; color:white; }
     .success-circle i { font-size:34px; }
@@ -93,11 +91,10 @@
     .success-sub { font-size:13px; color:var(--muted); line-height:1.6; }
     .booking-id  { display:inline-block; margin-top:14px; font-size:11px; letter-spacing:.1em; color:var(--muted); background:#f0e8e2; padding:6px 16px; border-radius:99px; }
 
-    /* CALENDAR BUTTONS */
     .cal-section { margin:20px 0 4px; }
-    .cal-lbl { font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); font-weight:500; margin-bottom:10px; text-align:left; }
+    .cal-lbl  { font-size:11px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); font-weight:500; margin-bottom:10px; }
     .cal-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-    .cal-btn { display:flex; align-items:center; justify-content:center; gap:7px; padding:13px 10px; border-radius:var(--br-md); font-size:13px; font-weight:500; font-family:'Inter',sans-serif; text-decoration:none; border:1px solid var(--border); transition:all .15s; cursor:pointer; }
+    .cal-btn  { display:flex; align-items:center; justify-content:center; gap:7px; padding:13px 10px; border-radius:var(--br-md); font-size:13px; font-weight:500; font-family:'Inter',sans-serif; text-decoration:none; border:1px solid var(--border); transition:all .15s; cursor:pointer; }
     .cal-btn-gcal { background:#4285f4; color:white; border-color:#4285f4; }
     .cal-btn-gcal:hover { background:#3b78e7; }
     .cal-btn-ics  { background:white; color:var(--clay); border-color:var(--border); }
@@ -114,22 +111,32 @@
     .filter-btn { padding:5px 13px; border-radius:99px; font-size:12px; border:1px solid var(--border); background:white; cursor:pointer; color:var(--muted); font-family:'Inter',sans-serif; transition:all .14s; }
     .filter-btn.active { background:var(--clay); color:white; border-color:var(--clay); }
 
-    /* ADMIN AVAILABILITY */
-    .avail-section { margin-bottom:20px; }
-    .avail-title { font-size:13px; font-weight:500; margin-bottom:10px; color:var(--text); }
-    .avail-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-    .avail-card { border:1px solid var(--border); border-radius:var(--br-md); padding:12px 13px; background:white; position:relative; }
-    .avail-card .av-day  { font-size:10px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin-bottom:2px; }
-    .avail-card .av-time { font-size:14px; font-weight:500; color:var(--text); }
-    .avail-card .av-date { font-size:11px; color:var(--muted); margin-top:2px; }
-    .avail-toggle { position:absolute; top:10px; right:10px; }
-    .toggle-input { display:none; }
-    .toggle-label { display:inline-block; width:36px; height:20px; background:#ddd; border-radius:99px; cursor:pointer; position:relative; transition:background .2s; }
-    .toggle-label::after { content:''; position:absolute; width:16px; height:16px; background:white; border-radius:50%; top:2px; left:2px; transition:left .2s; }
-    .toggle-input:checked + .toggle-label { background:var(--clay); }
-    .toggle-input:checked + .toggle-label::after { left:18px; }
-    .avail-blocked { background:#fdf4f0; border-color:rgba(201,122,94,.3); }
-    .avail-blocked .av-day,.avail-blocked .av-time,.avail-blocked .av-date { opacity:.5; }
+    /* AVAILABILITY MANAGER */
+    .avail-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+    .avail-header span { font-size:15px; font-weight:500; }
+    .avail-list { display:flex; flex-direction:column; gap:8px; margin-bottom:12px; }
+    .avail-item { display:flex; align-items:center; justify-content:space-between; border:1px solid var(--border); border-radius:var(--br-md); padding:12px 14px; background:white; }
+    .avail-item.blocked { background:#fdf4f0; border-color:rgba(201,122,94,.3); opacity:.7; }
+    .avail-item-left { display:flex; flex-direction:column; gap:2px; }
+    .avail-item-day  { font-size:10px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); }
+    .avail-item-datetime { font-size:14px; font-weight:500; color:var(--text); }
+    .avail-item-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+
+    /* TOGGLE */
+    .toggle-wrap { display:flex; align-items:center; gap:6px; }
+    .toggle-wrap span { font-size:11px; color:var(--muted); }
+    .tog { display:none; }
+    .tog-lbl { display:inline-block; width:36px; height:20px; background:#ccc; border-radius:99px; cursor:pointer; position:relative; transition:background .2s; flex-shrink:0; }
+    .tog-lbl::after { content:''; position:absolute; width:16px; height:16px; background:white; border-radius:50%; top:2px; left:2px; transition:left .2s; box-shadow:0 1px 3px rgba(0,0,0,.2); }
+    .tog:checked + .tog-lbl { background:var(--clay); }
+    .tog:checked + .tog-lbl::after { left:18px; }
+
+    /* ADD SLOT FORM */
+    .add-slot-form { background:#fdf4f0; border:1px solid var(--border); border-radius:var(--br-md); padding:16px; margin-bottom:12px; display:none; }
+    .add-slot-form.open { display:block; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
+    .form-row .field { margin-bottom:0; }
+    .add-slot-actions { display:flex; gap:8px; }
 
     /* BOOKINGS TABLE */
     .tbl-wrap { overflow-x:auto; border-radius:var(--br-md); border:1px solid var(--border); }
@@ -142,15 +149,17 @@
     .pill-green { background:#eaf6f1; color:#0a5c42; }
     .pill-red   { background:#fceaea; color:#8a2020; }
     .sub-text   { font-size:11px; color:var(--muted); margin-top:2px; }
-    .cancel-btn { font-size:11px; color:#a32d2d; background:none; border:1px solid rgba(163,45,45,.3); border-radius:6px; padding:3px 8px; cursor:pointer; font-family:'Inter',sans-serif; transition:all .14s; margin-top:4px; }
-    .cancel-btn:hover { background:#fceaea; }
 
-    /* MISC */
-    .loading-state,.empty-state { text-align:center; padding:36px 0; color:var(--muted); font-size:13px; }
+    .loading-state, .empty-state { text-align:center; padding:36px 0; color:var(--muted); font-size:13px; }
     @keyframes spin { to { transform:rotate(360deg); } }
     .spin { display:inline-block; animation:spin 1s linear infinite; }
-    .divider { border:none; border-top:1px solid var(--border); margin:20px 0; }
-    @media (max-width:400px) { .slot-grid,.session-grid,.cal-grid,.avail-grid { grid-template-columns:1fr; } body { padding:16px 12px 48px; } }
+    .divider { border:none; border-top:1px solid var(--border); margin:22px 0; }
+    .section-title { font-size:15px; font-weight:500; margin-bottom:14px; }
+
+    @media (max-width:420px) {
+      .slot-grid, .session-grid, .cal-grid, .form-row { grid-template-columns:1fr; }
+      body { padding:16px 12px 48px; }
+    }
   </style>
 </head>
 <body>
@@ -200,7 +209,7 @@
       <div class="summary-card" id="summary-card"></div>
       <div class="verse">"For where two or three gather in my name, there am I with them."<span class="verse-ref">Matthew 18:20 · NIV</span></div>
       <button class="btn-primary" id="btn-confirm"><i class="ti ti-send"></i> Confirm &amp; send</button>
-      <button class="btn-ghost" id="btn-back"><i class="ti ti-arrow-left"></i> Go back</button>
+      <button class="btn-ghost"   id="btn-back"><i class="ti ti-arrow-left"></i> Go back</button>
     </div>
 
     <div id="step-3" class="step">
@@ -243,17 +252,49 @@
   <!-- ═══ ADMIN DASHBOARD ═══ -->
   <div id="view-admin" class="view">
 
-    <!-- Availability Manager -->
-    <div class="avail-section">
-      <p class="avail-title">Manage availability</p>
-      <div class="avail-grid" id="avail-grid">
-        <div class="loading-state" style="grid-column:span 2;padding:20px 0;"><i class="ti ti-loader spin"></i></div>
+    <!-- AVAILABILITY MANAGER -->
+    <div class="avail-header">
+      <span>Availability</span>
+      <button class="btn-sm btn-sm-clay" id="btn-add-slot"><i class="ti ti-plus"></i> Add slot</button>
+    </div>
+
+    <!-- Add slot form (hidden by default) -->
+    <div class="add-slot-form" id="add-slot-form">
+      <div class="form-row">
+        <div class="field">
+          <span class="label">Date</span>
+          <input type="date" id="new-slot-date" />
+        </div>
+        <div class="field">
+          <span class="label">Time</span>
+          <select id="new-slot-time">
+            <option value="1:00 PM">1:00 PM</option>
+            <option value="2:00 PM">2:00 PM</option>
+            <option value="3:00 PM">3:00 PM</option>
+            <option value="4:00 PM">4:00 PM</option>
+            <option value="5:00 PM">5:00 PM</option>
+            <option value="6:00 PM">6:00 PM</option>
+            <option value="7:00 PM">7:00 PM</option>
+            <option value="8:00 PM">8:00 PM</option>
+            <option value="9:00 PM" selected>9:00 PM</option>
+            <option value="10:00 AM">10:00 AM</option>
+            <option value="11:00 AM">11:00 AM</option>
+          </select>
+        </div>
       </div>
+      <div class="add-slot-actions">
+        <button class="btn-sm btn-sm-clay" id="btn-save-slot"><i class="ti ti-check"></i> Save slot</button>
+        <button class="btn-sm btn-sm-ghost" id="btn-cancel-slot">Cancel</button>
+      </div>
+    </div>
+
+    <div class="avail-list" id="avail-list">
+      <div class="loading-state" style="padding:20px 0;"><i class="ti ti-loader spin"></i></div>
     </div>
 
     <hr class="divider" />
 
-    <!-- Bookings Table -->
+    <!-- BOOKINGS TABLE -->
     <div class="admin-hdr">
       <span>All Bookings</span>
       <button class="btn-ghost" id="btn-refresh" style="width:auto;padding:7px 14px;font-size:12px;margin-top:0;"><i class="ti ti-refresh"></i> Refresh</button>
@@ -268,16 +309,15 @@
     <button class="btn-ghost" id="btn-logout" style="margin-top:18px;"><i class="ti ti-logout"></i> Sign out</button>
   </div>
 
-</div><!-- /app -->
+</div>
 
 <script>
 "use strict";
 
-/* ════════════════════════════════
-   CONFIG
-════════════════════════════════ */
+/* ════ CONFIG ════ */
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzL5UCzFF_bHfurfRGguqy1j1MWc4IWx8pduwJqeLvP3UYldKQGRmuTJ17sI65LE6G2/exec";
 const ADMIN_PW   = "selah2024";
+const LS_KEY     = "dgroup_slots_v1";  // localStorage key for custom slots
 
 const SESSIONS = [
   { name:"Discipleship Check-in", icon:"ti-heart",     dur:30 },
@@ -286,261 +326,252 @@ const SESSIONS = [
   { name:"Bible Study",           icon:"ti-book",       dur:45 },
 ];
 
-/* ════════════════════════════════
-   STATE
-════════════════════════════════ */
+/* ════ STATE ════ */
 const S = {
-  slots:        [],      // { day, time, date, dateKey }
-  bookedKeys:   new Set(),   // dateKey|time for confirmed bookings
-  blockedKeys:  new Set(),   // dateKey|time manually blocked by admin
+  slots:        [],   // { dateKey, day, date, time, blocked } — sorted by date
+  bookedKeys:   new Set(),
   selectedSlot: null,
   selectedSess: null,
   allBookings:  [],
   adminFilter:  "all",
 };
 
-/* ════════════════════════════════
-   DATE HELPERS
-   We use a simple YYYY-MM-DD dateKey so format never mismatches
-════════════════════════════════ */
+/* ════ SLOT STORAGE (localStorage) ════
+   Each slot: { dateKey:"2025-06-20", time:"1:00 PM", blocked:false }
+   Default slots = next 10 Fridays + Sundays
+*/
 function toDateKey(d) {
-  // "2025-06-20"  — always consistent regardless of locale
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return y + "-" + m + "-" + day;
+  return d.getFullYear() + "-" +
+    String(d.getMonth()+1).padStart(2,"0") + "-" +
+    String(d.getDate()).padStart(2,"0");
 }
 
-function slotKey(slot) {
-  return slot.dateKey + "|" + slot.time;
+function parseDateKey(dk) {
+  // "2025-06-20" -> Date at midnight local
+  var p = dk.split("-");
+  return new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));
 }
 
-// Human-readable date that matches what the Apps Script stores in the sheet
-// e.g. "Friday, June 20, 2025"
+function dayName(d) {
+  return d.toLocaleDateString("en-PH",{weekday:"long"});
+}
+
 function fmtDateFull(d) {
-  return d.toLocaleDateString("en-PH", {
-    weekday:"long", month:"long", day:"numeric", year:"numeric"
-  });
+  return d.toLocaleDateString("en-PH",{weekday:"long",month:"long",day:"numeric",year:"numeric"});
 }
 
 function fmtDateShort(d) {
-  return d.toLocaleDateString("en-PH", { month:"short", day:"numeric" });
+  return d.toLocaleDateString("en-PH",{month:"short",day:"numeric"});
 }
 
-// Build upcoming Friday + Sunday slots
-function buildSlots() {
-  const result = [];
-  const d = new Date();
-  d.setHours(0, 0, 0, 0);
-  let safety = 0;
-  while (result.length < 10 && safety++ < 90) {
-    const dow = d.getDay();
-    if (dow === 5) result.push({ day:"Friday", time:"1:00 PM",  date:new Date(d), dateKey:toDateKey(d) });
-    if (dow === 0) result.push({ day:"Sunday", time:"9:00 PM",  date:new Date(d), dateKey:toDateKey(d) });
-    d.setDate(d.getDate() + 1);
+function defaultSlotRecords() {
+  var records = [];
+  var d = new Date(); d.setHours(0,0,0,0);
+  var safety = 0;
+  while (records.length < 10 && safety++ < 90) {
+    var dow = d.getDay();
+    if (dow === 5) records.push({ dateKey:toDateKey(d), time:"1:00 PM", blocked:false });
+    if (dow === 0) records.push({ dateKey:toDateKey(d), time:"9:00 PM", blocked:false });
+    d.setDate(d.getDate()+1);
   }
-  return result;
+  return records;
 }
 
-/* ════════════════════════════════
-   CALENDAR HELPERS
-════════════════════════════════ */
+function loadSlotRecords() {
+  try {
+    var raw = localStorage.getItem(LS_KEY);
+    if (raw) {
+      var saved = JSON.parse(raw);
+      // Remove past slots, keep future + today
+      var todayKey = toDateKey(new Date());
+      return saved.filter(function(s){ return s.dateKey >= todayKey; });
+    }
+  } catch(e) {}
+  return defaultSlotRecords();
+}
+
+function saveSlotRecords(records) {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(records)); } catch(e) {}
+}
+
+function buildSlotsFromRecords(records) {
+  return records
+    .slice()
+    .sort(function(a,b){ return (a.dateKey+a.time).localeCompare(b.dateKey+b.time); })
+    .map(function(r) {
+      var d = parseDateKey(r.dateKey);
+      return {
+        dateKey: r.dateKey,
+        day:     dayName(d),
+        date:    d,
+        time:    r.time,
+        blocked: r.blocked || false,
+      };
+    });
+}
+
+function slotKey(slot) { return slot.dateKey + "|" + slot.time; }
+
+/* ════ CALENDAR HELPERS ════ */
 function slotToUTC(slot, durMins) {
-  const parts = slot.time.split(" ");
-  const hm    = parts[0].split(":");
-  let h       = parseInt(hm[0], 10);
-  const mins  = parseInt(hm[1], 10);
-  const ap    = parts[1].toUpperCase();
-  if (ap === "PM" && h !== 12) h += 12;
-  if (ap === "AM" && h === 12) h  = 0;
-  const d = slot.date;
-  const localMs  = new Date(d.getFullYear(), d.getMonth(), d.getDate(), h, mins, 0).getTime();
-  const startUTC = new Date(localMs - 8 * 3600000);
-  const endUTC   = new Date(localMs - 8 * 3600000 + durMins * 60000);
-  return { startUTC, endUTC };
+  var parts = slot.time.split(" ");
+  var hm    = parts[0].split(":");
+  var h     = parseInt(hm[0],10), m = parseInt(hm[1],10);
+  var ap    = parts[1].toUpperCase();
+  if (ap==="PM" && h!==12) h+=12;
+  if (ap==="AM" && h===12) h=0;
+  var d = slot.date;
+  var local = new Date(d.getFullYear(),d.getMonth(),d.getDate(),h,m,0);
+  return {
+    startUTC: new Date(local.getTime()-8*3600000),
+    endUTC:   new Date(local.getTime()-8*3600000+durMins*60000)
+  };
 }
 
-function fmtUTC(dt) {
-  return dt.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
-}
+function fmtUTC(dt) { return dt.toISOString().replace(/[-:]/g,"").split(".")[0]+"Z"; }
 
 function buildGCalURL(slot, sess, note) {
-  const { startUTC, endUTC } = slotToUTC(slot, sess.dur);
-  const title   = "1-on-1 with Chari \u00b7 " + sess.name;
-  const details = "DGroup 1-on-1 with Chari\nSession: " + sess.name +
-                  (note ? "\nPrayer intention: " + note : "");
+  var t = slotToUTC(slot, sess.dur);
   return "https://calendar.google.com/calendar/render?action=TEMPLATE" +
-    "&text="     + encodeURIComponent(title) +
-    "&dates="    + fmtUTC(startUTC) + "/" + fmtUTC(endUTC) +
-    "&details="  + encodeURIComponent(details) +
-    "&location=" + encodeURIComponent("TBD (Online or In-Person)");
+    "&text="    + encodeURIComponent("1-on-1 with Chari - "+sess.name) +
+    "&dates="   + fmtUTC(t.startUTC)+"/"+fmtUTC(t.endUTC) +
+    "&details=" + encodeURIComponent("DGroup 1-on-1\nSession: "+sess.name+(note?"\nPrayer: "+note:"")) +
+    "&location="+ encodeURIComponent("TBD (Online or In-Person)");
 }
 
-function buildICSContent(slot, sess, name, email, note, bookingId) {
-  const { startUTC, endUTC } = slotToUTC(slot, sess.dur);
-  const uid  = "dgroup-" + bookingId + "@chari-booking";
-  const desc = "1-on-1 with Chari \u2014 " + sess.name +
-               (note ? "\\nPrayer intention: " + note : "");
-  return [
-    "BEGIN:VCALENDAR","VERSION:2.0",
-    "PRODID:-//Chari DGroup Booking//EN",
-    "CALSCALE:GREGORIAN","METHOD:REQUEST",
-    "BEGIN:VEVENT",
-    "UID:" + uid,
-    "DTSTART:" + fmtUTC(startUTC),
-    "DTEND:"   + fmtUTC(endUTC),
-    "SUMMARY:1-on-1 with Chari \u00b7 " + sess.name,
-    "DESCRIPTION:" + desc,
+function buildICS(slot, sess, name, email, note, bookingId) {
+  var t   = slotToUTC(slot, sess.dur);
+  var uid = "dgroup-"+bookingId+"@chari-booking";
+  var desc = "1-on-1 with Chari - "+sess.name+(note?"\\nPrayer: "+note:"");
+  return ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Chari DGroup//EN",
+    "CALSCALE:GREGORIAN","METHOD:REQUEST","BEGIN:VEVENT",
+    "UID:"+uid,"DTSTART:"+fmtUTC(t.startUTC),"DTEND:"+fmtUTC(t.endUTC),
+    "SUMMARY:1-on-1 with Chari - "+sess.name,"DESCRIPTION:"+desc,
     "ORGANIZER;CN=Chari:mailto:Chari.delacruz@gmail.com",
-    "ATTENDEE;CN=" + name + ":mailto:" + email,
-    "LOCATION:TBD (Online or In-Person)",
-    "DTSTAMP:" + fmtUTC(new Date()),
-    "STATUS:CONFIRMED",
-    "BEGIN:VALARM","TRIGGER:-PT30M","ACTION:DISPLAY",
+    "ATTENDEE;CN="+name+":mailto:"+email,
+    "LOCATION:TBD (Online or In-Person)","DTSTAMP:"+fmtUTC(new Date()),
+    "STATUS:CONFIRMED","BEGIN:VALARM","TRIGGER:-PT30M","ACTION:DISPLAY",
     "DESCRIPTION:Your 1-on-1 with Chari starts in 30 minutes",
-    "END:VALARM","END:VEVENT","END:VCALENDAR"
-  ].join("\r\n");
+    "END:VALARM","END:VEVENT","END:VCALENDAR"].join("\r\n");
 }
 
 function populateCalButtons(slot, sess, name, email, note, bookingId) {
-  // Google Calendar link
   document.getElementById("cal-gcal").href = buildGCalURL(slot, sess, note);
-
-  // ICS download via Blob — works on all browsers
-  const icsText = buildICSContent(slot, sess, name, email, note, bookingId);
-  const blob    = new Blob([icsText], { type: "text/calendar;charset=utf-8" });
-  const icsEl   = document.getElementById("cal-ics");
-
-  // Revoke any previous blob URL to avoid memory leaks
+  var icsText = buildICS(slot, sess, name, email, note, bookingId);
+  var blob    = new Blob([icsText],{type:"text/calendar;charset=utf-8"});
+  var icsEl   = document.getElementById("cal-ics");
   if (icsEl._blobURL) URL.revokeObjectURL(icsEl._blobURL);
-  const blobURL    = URL.createObjectURL(blob);
-  icsEl._blobURL   = blobURL;
-  icsEl.href       = blobURL;
-  icsEl.setAttribute("download", "dgroup-1on1.ics");
-
-  // Fallback for iOS Safari which doesn't support blob download
-  icsEl.onclick = function(e) {
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    if (isIOS) {
+  icsEl._blobURL = URL.createObjectURL(blob);
+  icsEl.href     = icsEl._blobURL;
+  icsEl.setAttribute("download","dgroup-1on1.ics");
+  icsEl.onclick  = function(e) {
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
       e.preventDefault();
-      // Open as data URI for iOS
-      const dataURI = "data:text/calendar;charset=utf8," + encodeURIComponent(icsText);
-      window.open(dataURI);
+      window.open("data:text/calendar;charset=utf8,"+encodeURIComponent(icsText));
     }
   };
 }
 
-/* ════════════════════════════════
-   JSONP (for GET requests to Apps Script)
-════════════════════════════════ */
+/* ════ JSONP ════ */
 function jsonpGet(url) {
-  return new Promise(function(resolve, reject) {
-    const id     = "_cb" + Date.now() + Math.floor(Math.random() * 9999);
-    const script = document.createElement("script");
-    const timer  = setTimeout(function() { cleanup(); reject(new Error("Timeout")); }, 12000);
-    function cleanup() {
-      clearTimeout(timer);
-      delete window[id];
-      if (script.parentNode) script.parentNode.removeChild(script);
-    }
-    window[id]     = function(data) { cleanup(); resolve(data); };
-    script.onerror = function()     { cleanup(); reject(new Error("Load error")); };
-    script.src     = url + (url.includes("?") ? "&" : "?") + "callback=" + id;
+  return new Promise(function(resolve,reject){
+    var id = "_cb"+Date.now()+Math.floor(Math.random()*9999);
+    var script = document.createElement("script");
+    var timer  = setTimeout(function(){ cleanup(); reject(new Error("Timeout")); },12000);
+    function cleanup(){ clearTimeout(timer); delete window[id]; if(script.parentNode) script.parentNode.removeChild(script); }
+    window[id]     = function(d){ cleanup(); resolve(d); };
+    script.onerror = function(){  cleanup(); reject(new Error("Load error")); };
+    script.src = url+(url.includes("?")?"&":"?")+"callback="+id;
     document.head.appendChild(script);
   });
 }
 
-/* ════════════════════════════════
-   RENDER BOOKING SLOTS
-════════════════════════════════ */
+/* ════ RENDER BOOKING SLOTS ════ */
 function isTaken(slot) {
-  return S.bookedKeys.has(slotKey(slot)) || S.blockedKeys.has(slotKey(slot));
+  return S.bookedKeys.has(slotKey(slot)) || slot.blocked;
 }
 
 function renderSlots() {
-  const container = document.getElementById("slot-container");
-  const fridays   = S.slots.map(function(s,i){return{s,i};}).filter(function(x){return x.s.day==="Friday";});
-  const sundays   = S.slots.map(function(s,i){return{s,i};}).filter(function(x){return x.s.day==="Sunday";});
+  var container = document.getElementById("slot-container");
+  if (!S.slots.length) {
+    container.innerHTML = '<p style="font-size:13px;color:var(--muted);text-align:center;padding:16px 0;">No slots available yet. Check back soon!</p>';
+    return;
+  }
+
+  // Group by week label
+  var fridays = S.slots.filter(function(s){ return s.day==="Friday"; });
+  var sundays  = S.slots.filter(function(s){ return s.day==="Sunday"; });
+  var others   = S.slots.filter(function(s){ return s.day!=="Friday" && s.day!=="Sunday"; });
 
   function group(list, label) {
-    var html = '<p class="week-lbl">' + label + '</p><div class="slot-grid">';
-    list.forEach(function(x) {
-      var s = x.s, i = x.i;
+    if (!list.length) return "";
+    var html = '<p class="week-lbl">'+label+'</p><div class="slot-grid">';
+    list.forEach(function(s,_) {
+      var idx    = S.slots.indexOf(s);
       var taken  = isTaken(s);
-      var chosen = S.selectedSlot === i;
-      html += '<div class="slot-card' + (taken ? " taken" : "") + (chosen ? " selected" : "") +
-              '" data-slot="' + i + '">' +
-              '<div class="sc-day">'   + s.day           + '</div>' +
-              '<div class="sc-time">'  + s.time          + '</div>' +
-              '<div class="sc-date">'  + fmtDateShort(s.date) + '</div>' +
-              '<span class="sc-badge ' + (taken ? "badge-taken" : "badge-open") + '">' +
-              (taken ? "Taken" : "Open") + '</span></div>';
+      var chosen = S.selectedSlot === idx;
+      html += '<div class="slot-card'+(taken?" taken":"")+(chosen?" selected":"")+(taken?"":" hoverable")+'" data-slot="'+idx+'">' +
+        '<div class="sc-day">'+s.day+'</div>' +
+        '<div class="sc-time">'+s.time+'</div>' +
+        '<div class="sc-date">'+fmtDateShort(s.date)+'</div>' +
+        '<span class="sc-badge '+(taken?"badge-taken":"badge-open")+'">'+(taken?"Taken":"Open")+'</span>' +
+        '</div>';
     });
     html += '</div>';
     return html;
   }
 
-  container.innerHTML =
-    group(fridays, "Fridays · 1:00–2:00 PM PHT") +
-    group(sundays, "Sundays · 9:00–10:00 PM PHT");
+  var html = "";
+  if (fridays.length) html += group(fridays,"Fridays · 1:00–2:00 PM PHT");
+  if (sundays.length) html += group(sundays,"Sundays · 9:00–10:00 PM PHT");
+  if (others.length)  html += group(others, "Additional slots");
+  container.innerHTML = html;
 
-  container.querySelectorAll(".slot-card:not(.taken)").forEach(function(card) {
-    card.addEventListener("click", function() {
-      S.selectedSlot = parseInt(this.getAttribute("data-slot"), 10);
+  container.querySelectorAll(".slot-card:not(.taken)").forEach(function(card){
+    card.addEventListener("click",function(){
+      S.selectedSlot = parseInt(this.getAttribute("data-slot"),10);
       renderSlots();
     });
   });
 }
 
-/* ════════════════════════════════
-   RENDER SESSIONS
-════════════════════════════════ */
 function renderSessions() {
   var grid = document.getElementById("session-grid");
-  grid.innerHTML = SESSIONS.map(function(s, i) {
-    return '<div class="session-card' + (S.selectedSess === i ? " selected" : "") +
-           '" data-sess="' + i + '">' +
-           '<i class="ti ' + s.icon + '"></i>' +
-           '<div class="ss-name">' + s.name + '</div>' +
-           '<div class="ss-dur">'  + s.dur  + ' min</div></div>';
+  grid.innerHTML = SESSIONS.map(function(s,i){
+    return '<div class="session-card'+(S.selectedSess===i?" selected":"")+'" data-sess="'+i+'">'+
+      '<i class="ti '+s.icon+'"></i>'+
+      '<div class="ss-name">'+s.name+'</div>'+
+      '<div class="ss-dur">'+s.dur+' min</div></div>';
   }).join("");
-  grid.querySelectorAll(".session-card").forEach(function(card) {
-    card.addEventListener("click", function() {
-      S.selectedSess = parseInt(this.getAttribute("data-sess"), 10);
+  grid.querySelectorAll(".session-card").forEach(function(card){
+    card.addEventListener("click",function(){
+      S.selectedSess = parseInt(this.getAttribute("data-sess"),10);
       renderSessions();
     });
   });
 }
 
-/* ════════════════════════════════
-   LOAD SLOTS (fetch live bookings)
-════════════════════════════════ */
+/* ════ LOAD SLOTS ════ */
 async function loadSlots() {
   document.getElementById("slot-loading").style.display   = "block";
   document.getElementById("slot-container").style.display = "none";
-  S.slots = buildSlots();
+
+  var records = loadSlotRecords();
+  S.slots = buildSlotsFromRecords(records);
 
   try {
-    var res = await jsonpGet(SCRIPT_URL + "?action=getBookings");
+    var res = await jsonpGet(SCRIPT_URL+"?action=getBookings");
     if (res.success) {
       S.bookedKeys = new Set(
-        (res.bookings || [])
-          .filter(function(b) { return b.status !== "Cancelled"; })
-          .map(function(b) {
-            // The sheet stores dates like "Friday, June 20, 2025"
-            // We need to convert to our dateKey format for matching
-            // Find which slot date matches this booking date string
-            var match = S.slots.find(function(slot) {
-              return fmtDateFull(slot.date) === b.date;
-            });
+        (res.bookings||[])
+          .filter(function(b){ return b.status!=="Cancelled"; })
+          .map(function(b){
+            var match = S.slots.find(function(slot){ return fmtDateFull(slot.date)===b.date; });
             return match ? slotKey(match) : null;
-          })
-          .filter(Boolean)
+          }).filter(Boolean)
       );
     }
-  } catch(e) {
-    console.warn("Could not fetch bookings:", e);
-  }
+  } catch(e) { console.warn("Could not fetch bookings:",e); }
 
   document.getElementById("slot-loading").style.display   = "none";
   document.getElementById("slot-container").style.display = "block";
@@ -548,267 +579,275 @@ async function loadSlots() {
   renderSessions();
 }
 
-/* ════════════════════════════════
-   SHOW HELPERS
-════════════════════════════════ */
+/* ════ SHOW HELPERS ════ */
 function showStep(id) {
-  document.querySelectorAll(".step").forEach(function(el) { el.classList.remove("active"); });
+  document.querySelectorAll(".step").forEach(function(el){ el.classList.remove("active"); });
   document.getElementById(id).classList.add("active");
 }
 function showView(id) {
-  document.querySelectorAll(".view").forEach(function(el) { el.classList.remove("active"); });
+  document.querySelectorAll(".view").forEach(function(el){ el.classList.remove("active"); });
   document.getElementById(id).classList.add("active");
-  document.getElementById("tab-book").classList.toggle("active",  id === "view-book");
-  document.getElementById("tab-admin").classList.toggle("active", id !== "view-book");
+  document.getElementById("tab-book").classList.toggle("active",  id==="view-book");
+  document.getElementById("tab-admin").classList.toggle("active", id!=="view-book");
 }
-function sumRow(k, v) {
-  return '<div class="sum-row"><span class="sk">' + k + '</span><span class="sv">' + v + '</span></div>';
+function sumRow(k,v) {
+  return '<div class="sum-row"><span class="sk">'+k+'</span><span class="sv">'+v+'</span></div>';
 }
 
-/* ════════════════════════════════
-   BUTTON WIRING
-════════════════════════════════ */
-document.getElementById("tab-book").addEventListener("click", function() { showView("view-book"); });
-document.getElementById("tab-admin").addEventListener("click", function() { showView("view-admin-gate"); });
+/* ════ BOOKING BUTTONS ════ */
+document.getElementById("tab-book").addEventListener("click",function(){ showView("view-book"); });
+document.getElementById("tab-admin").addEventListener("click",function(){ showView("view-admin-gate"); });
 
-document.getElementById("btn-review").addEventListener("click", function() {
+document.getElementById("btn-review").addEventListener("click",function(){
   var name  = document.getElementById("inp-name").value.trim();
   var email = document.getElementById("inp-email").value.trim();
-  if (S.selectedSlot === null)         { alert("Please choose a time slot."); return; }
-  if (!name)                           { alert("Please enter your name."); return; }
-  if (!email || !email.includes("@"))  { alert("Please enter a valid email address."); return; }
-  if (S.selectedSess === null)         { alert("Please choose a session type."); return; }
+  if (S.selectedSlot===null)       { alert("Please choose a time slot."); return; }
+  if (!name)                       { alert("Please enter your name."); return; }
+  if (!email||!email.includes("@")){ alert("Please enter a valid email address."); return; }
+  if (S.selectedSess===null)       { alert("Please choose a session type."); return; }
 
   var slot = S.slots[S.selectedSlot];
   var sess = SESSIONS[S.selectedSess];
   var note = document.getElementById("inp-note").value.trim();
 
   document.getElementById("summary-card").innerHTML =
-    sumRow("Name",     name) +
-    sumRow("Email",    email) +
-    sumRow("Session",  sess.name) +
-    sumRow("Date",     fmtDateFull(slot.date)) +
-    sumRow("Time",     slot.time + " Manila (PHT)") +
-    sumRow("Duration", sess.dur + " minutes") +
-    (note ? sumRow("Prayer note", "<em>" + note + "</em>") : "");
-
+    sumRow("Name",    name)+sumRow("Email",email)+
+    sumRow("Session", sess.name)+sumRow("Date",fmtDateFull(slot.date))+
+    sumRow("Time",    slot.time+" Manila (PHT)")+sumRow("Duration",sess.dur+" minutes")+
+    (note?sumRow("Prayer note","<em>"+note+"</em>"):"");
   showStep("step-2");
 });
 
-document.getElementById("btn-back").addEventListener("click", function() { showStep("step-1"); });
+document.getElementById("btn-back").addEventListener("click",function(){ showStep("step-1"); });
 
-document.getElementById("btn-confirm").addEventListener("click", async function() {
+document.getElementById("btn-confirm").addEventListener("click",async function(){
   var btn   = this;
   var name  = document.getElementById("inp-name").value.trim();
   var email = document.getElementById("inp-email").value.trim();
   var note  = document.getElementById("inp-note").value.trim();
   var slot  = S.slots[S.selectedSlot];
   var sess  = SESSIONS[S.selectedSess];
-
-  btn.disabled  = true;
-  btn.innerHTML = '<i class="ti ti-loader spin"></i> Sending\u2026';
-
+  btn.disabled=true; btn.innerHTML='<i class="ti ti-loader spin"></i> Sending…';
   try {
-    var res  = await fetch(SCRIPT_URL, {
-      method: "POST",
-      body:   JSON.stringify({ action:"book", name, email, note,
-                date:fmtDateFull(slot.date), time:slot.time,
-                session:sess.name, duration:sess.dur })
-    });
+    var res  = await fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify({
+      action:"book",name,email,note,
+      date:fmtDateFull(slot.date),time:slot.time,session:sess.name,duration:sess.dur
+    })});
     var json = await res.json();
     if (json.success) {
       S.bookedKeys.add(slotKey(slot));
       document.getElementById("booking-id-display").textContent = json.bookingId;
-      populateCalButtons(slot, sess, name, email, note, json.bookingId);
+      populateCalButtons(slot,sess,name,email,note,json.bookingId);
       showStep("step-3");
     } else {
-      alert("Booking failed: " + (json.error || "Unknown error."));
-      btn.disabled  = false;
-      btn.innerHTML = '<i class="ti ti-send"></i> Confirm &amp; send';
+      alert("Booking failed: "+(json.error||"Unknown error."));
+      btn.disabled=false; btn.innerHTML='<i class="ti ti-send"></i> Confirm &amp; send';
     }
   } catch(e) {
-    alert("Network error. Please check your connection and try again.");
-    btn.disabled  = false;
-    btn.innerHTML = '<i class="ti ti-send"></i> Confirm &amp; send';
+    alert("Network error. Please try again.");
+    btn.disabled=false; btn.innerHTML='<i class="ti ti-send"></i> Confirm &amp; send';
   }
 });
 
-document.getElementById("btn-another").addEventListener("click", function() {
-  S.selectedSlot = null; S.selectedSess = null;
-  document.getElementById("inp-name").value  = "";
-  document.getElementById("inp-email").value = "";
-  document.getElementById("inp-note").value  = "";
-  showStep("step-1");
-  renderSlots(); renderSessions();
+document.getElementById("btn-another").addEventListener("click",function(){
+  S.selectedSlot=null; S.selectedSess=null;
+  ["inp-name","inp-email","inp-note"].forEach(function(id){ document.getElementById(id).value=""; });
+  showStep("step-1"); renderSlots(); renderSessions();
 });
 
-/* ════════════════════════════════
-   ADMIN
-════════════════════════════════ */
-document.getElementById("btn-login").addEventListener("click", function() {
-  var pw  = document.getElementById("inp-pw").value;
-  var err = document.getElementById("pw-err");
-  if (pw === ADMIN_PW) {
-    err.style.display = "none";
-    showView("view-admin");
-    loadAdmin();
+/* ════ ADMIN LOGIN ════ */
+document.getElementById("btn-login").addEventListener("click",function(){
+  var pw=document.getElementById("inp-pw").value;
+  if (pw===ADMIN_PW) {
+    document.getElementById("pw-err").style.display="none";
+    showView("view-admin"); loadAdmin();
   } else {
-    err.style.display = "block";
+    document.getElementById("pw-err").style.display="block";
   }
 });
-document.getElementById("inp-pw").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") document.getElementById("btn-login").click();
+document.getElementById("inp-pw").addEventListener("keydown",function(e){ if(e.key==="Enter") document.getElementById("btn-login").click(); });
+document.getElementById("btn-logout").addEventListener("click",function(){
+  document.getElementById("inp-pw").value=""; showView("view-admin-gate");
 });
-document.getElementById("btn-logout").addEventListener("click", function() {
-  document.getElementById("inp-pw").value = "";
-  showView("view-admin-gate");
-});
-document.getElementById("btn-refresh").addEventListener("click", loadAdmin);
+document.getElementById("btn-refresh").addEventListener("click",loadAdmin);
 
-document.querySelectorAll(".filter-btn").forEach(function(btn) {
-  btn.addEventListener("click", function() {
-    document.querySelectorAll(".filter-btn").forEach(function(b) { b.classList.remove("active"); });
+/* ════ ADMIN AVAILABILITY ════ */
+document.getElementById("btn-add-slot").addEventListener("click",function(){
+  var form = document.getElementById("add-slot-form");
+  form.classList.toggle("open");
+  if (form.classList.contains("open")) {
+    // Default date to next Friday
+    var d = new Date(); d.setHours(0,0,0,0);
+    while (d.getDay()!==5) d.setDate(d.getDate()+1);
+    document.getElementById("new-slot-date").value = toDateKey(d);
+    document.getElementById("new-slot-time").value = "1:00 PM";
+  }
+});
+
+document.getElementById("btn-cancel-slot").addEventListener("click",function(){
+  document.getElementById("add-slot-form").classList.remove("open");
+});
+
+document.getElementById("btn-save-slot").addEventListener("click",function(){
+  var dateVal = document.getElementById("new-slot-date").value;
+  var timeVal = document.getElementById("new-slot-time").value;
+  if (!dateVal) { alert("Please pick a date."); return; }
+
+  var records = loadSlotRecords();
+  // Check duplicate
+  var exists = records.some(function(r){ return r.dateKey===dateVal && r.time===timeVal; });
+  if (exists) { alert("That slot already exists."); return; }
+
+  records.push({ dateKey:dateVal, time:timeVal, blocked:false });
+  saveSlotRecords(records);
+  document.getElementById("add-slot-form").classList.remove("open");
+
+  // Rebuild slots
+  S.slots = buildSlotsFromRecords(records);
+  renderAvailability();
+  renderSlots(); // keep booking view in sync
+});
+
+function renderAvailability() {
+  var list = document.getElementById("avail-list");
+  if (!S.slots.length) {
+    list.innerHTML = '<p style="font-size:13px;color:var(--muted);text-align:center;padding:12px 0;">No slots yet. Add one above.</p>';
+    return;
+  }
+
+  var records = loadSlotRecords();
+
+  list.innerHTML = S.slots.map(function(slot, idx) {
+    var taken    = S.bookedKeys.has(slotKey(slot));
+    var blocked  = slot.blocked;
+    var cbId     = "tog-"+slot.dateKey+"-"+slot.time.replace(/[: ]/g,"");
+    return '<div class="avail-item'+(blocked?" blocked":"")+'" data-idx="'+idx+'">' +
+      '<div class="avail-item-left">' +
+        '<div class="avail-item-day">'+slot.day+' &middot; '+fmtDateShort(slot.date)+'</div>' +
+        '<div class="avail-item-datetime">'+slot.time+' PHT</div>' +
+      '</div>' +
+      '<div class="avail-item-right">' +
+        (taken
+          ? '<span class="pill pill-green" style="font-size:11px;">Booked</span>'
+          : '<div class="toggle-wrap">'+
+              '<span>'+(blocked?"Blocked":"Open")+'</span>'+
+              '<input type="checkbox" class="tog" id="'+cbId+'" data-idx="'+idx+'"'+(blocked?'':' checked')+'/>'+
+              '<label class="tog-lbl" for="'+cbId+'"></label>'+
+            '</div>'
+        ) +
+        (taken ? '' : '<button class="btn-sm btn-sm-danger del-slot" data-idx="'+idx+'" title="Remove slot"><i class="ti ti-trash"></i></button>') +
+      '</div>' +
+    '</div>';
+  }).join("");
+
+  // Wire toggles
+  list.querySelectorAll(".tog").forEach(function(cb){
+    cb.addEventListener("change",function(){
+      var idx     = parseInt(this.getAttribute("data-idx"),10);
+      var records = loadSlotRecords();
+      var slot    = S.slots[idx];
+      // Find matching record and flip blocked
+      var rec = records.find(function(r){ return r.dateKey===slot.dateKey && r.time===slot.time; });
+      if (rec) { rec.blocked = !this.checked; saveSlotRecords(records); }
+      S.slots = buildSlotsFromRecords(records);
+      renderAvailability();
+      renderSlots();
+    });
+  });
+
+  // Wire delete buttons
+  list.querySelectorAll(".del-slot").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      var idx  = parseInt(this.getAttribute("data-idx"),10);
+      var slot = S.slots[idx];
+      if (!confirm("Remove slot: "+fmtDateFull(slot.date)+" at "+slot.time+"?")) return;
+      var records = loadSlotRecords().filter(function(r){
+        return !(r.dateKey===slot.dateKey && r.time===slot.time);
+      });
+      saveSlotRecords(records);
+      S.slots = buildSlotsFromRecords(records);
+      renderAvailability();
+      renderSlots();
+    });
+  });
+}
+
+/* ════ ADMIN LOAD ════ */
+async function loadAdmin() {
+  document.getElementById("admin-body").innerHTML =
+    '<div class="loading-state"><i class="ti ti-loader spin"></i> Loading…</div>';
+  renderAvailability();
+  try {
+    var res = await jsonpGet(SCRIPT_URL+"?action=getBookings");
+    if (res.success) {
+      S.allBookings = res.bookings||[];
+      S.bookedKeys  = new Set(
+        S.allBookings
+          .filter(function(b){ return b.status!=="Cancelled"; })
+          .map(function(b){
+            var match = S.slots.find(function(slot){ return fmtDateFull(slot.date)===b.date; });
+            return match ? slotKey(match) : null;
+          }).filter(Boolean)
+      );
+      renderAdminTable();
+      renderAvailability();
+    } else {
+      document.getElementById("admin-body").innerHTML='<div class="empty-state">Could not load bookings.</div>';
+    }
+  } catch(e) {
+    document.getElementById("admin-body").innerHTML='<div class="empty-state">Error loading data.</div>';
+  }
+}
+
+/* ════ FILTER ════ */
+document.querySelectorAll(".filter-btn").forEach(function(btn){
+  btn.addEventListener("click",function(){
+    document.querySelectorAll(".filter-btn").forEach(function(b){ b.classList.remove("active"); });
     this.classList.add("active");
     S.adminFilter = this.getAttribute("data-filter");
     renderAdminTable();
   });
 });
 
-/* ════════════════════════════════
-   ADMIN — AVAILABILITY
-════════════════════════════════ */
-function renderAvailability() {
-  var grid = document.getElementById("avail-grid");
-  if (!S.slots.length) {
-    grid.innerHTML = '<div class="loading-state" style="grid-column:span 2;padding:16px 0;"><i class="ti ti-loader spin"></i></div>';
-    return;
-  }
-  grid.innerHTML = S.slots.map(function(slot) {
-    var key      = slotKey(slot);
-    var isBlocked = S.blockedKeys.has(key);
-    var isBooked  = S.bookedKeys.has(key);
-    var cbId      = "avail-" + slot.dateKey + "-" + slot.time.replace(/[: ]/g, "");
-    return '<div class="avail-card' + (isBlocked || isBooked ? " avail-blocked" : "") + '">' +
-      '<div class="av-day">'  + slot.day              + '</div>' +
-      '<div class="av-time">' + slot.time             + '</div>' +
-      '<div class="av-date">' + fmtDateShort(slot.date) + '</div>' +
-      '<div class="avail-toggle">' +
-        (isBooked
-          ? '<span class="sc-badge badge-taken" style="position:static;display:inline-block;">Booked</span>'
-          : '<input type="checkbox" class="toggle-input" id="' + cbId + '" data-key="' + key + '"' +
-            (isBlocked ? '' : ' checked') + ' />' +
-            '<label class="toggle-label" for="' + cbId + '" title="' +
-            (isBlocked ? 'Blocked — click to open' : 'Open — click to block') + '"></label>'
-        ) +
-      '</div>' +
-    '</div>';
-  }).join("");
-
-  // Wire toggles
-  grid.querySelectorAll(".toggle-input").forEach(function(cb) {
-    cb.addEventListener("change", function() {
-      var key = this.getAttribute("data-key");
-      if (this.checked) {
-        S.blockedKeys.delete(key);  // checked = open
-      } else {
-        S.blockedKeys.add(key);     // unchecked = blocked
-      }
-      renderAvailability();
-      renderSlots(); // keep booking view in sync
-    });
-  });
-}
-
-/* ════════════════════════════════
-   ADMIN — BOOKINGS TABLE
-════════════════════════════════ */
-async function loadAdmin() {
-  document.getElementById("admin-body").innerHTML =
-    '<div class="loading-state"><i class="ti ti-loader spin"></i> Loading\u2026</div>';
-  renderAvailability(); // show slots immediately while loading
-  try {
-    var res = await jsonpGet(SCRIPT_URL + "?action=getBookings");
-    if (res.success) {
-      S.allBookings = res.bookings || [];
-      // Rebuild booked keys from fresh data
-      S.bookedKeys = new Set(
-        S.allBookings
-          .filter(function(b) { return b.status !== "Cancelled"; })
-          .map(function(b) {
-            var match = S.slots.find(function(slot) { return fmtDateFull(slot.date) === b.date; });
-            return match ? slotKey(match) : null;
-          })
-          .filter(Boolean)
-      );
-      renderAdminTable();
-      renderAvailability();
-    } else {
-      document.getElementById("admin-body").innerHTML =
-        '<div class="empty-state">Could not load bookings.</div>';
-    }
-  } catch(e) {
-    document.getElementById("admin-body").innerHTML =
-      '<div class="empty-state">Error loading data.</div>';
-  }
-}
-
 function renderAdminTable() {
-  var list = S.adminFilter === "all"
-    ? S.allBookings
-    : S.allBookings.filter(function(b) { return b.status === S.adminFilter; });
-
+  var list = S.adminFilter==="all" ? S.allBookings : S.allBookings.filter(function(b){ return b.status===S.adminFilter; });
   if (!list.length) {
-    document.getElementById("admin-body").innerHTML =
-      '<div class="empty-state">No bookings found.</div>';
+    document.getElementById("admin-body").innerHTML='<div class="empty-state">No bookings found.</div>';
     return;
   }
-
-  var sorted = list.slice().sort(function(a, b) {
-    // Sort by date then time
-    return a.date.localeCompare(b.date);
-  });
-
+  var sorted = list.slice().sort(function(a,b){ return a.date.localeCompare(b.date); });
   document.getElementById("admin-body").innerHTML =
     '<div class="tbl-wrap"><table>' +
     '<thead><tr><th>Member</th><th>Session</th><th>Date &amp; Time</th><th>Status</th></tr></thead><tbody>' +
-    sorted.map(function(b) {
-      var isConfirmed = b.status === "Confirmed";
+    sorted.map(function(b){
+      var ok = b.status==="Confirmed";
       return '<tr>' +
-        '<td><div style="font-weight:500;">' + b.name  + '</div><div class="sub-text">' + b.email + '</div>' +
-        (isConfirmed ? '<button class="cancel-btn" data-id="' + b.id + '">Cancel</button>' : '') +
+        '<td><div style="font-weight:500;">'+b.name+'</div><div class="sub-text">'+b.email+'</div>' +
+        (ok?'<button class="btn-sm btn-sm-danger cancel-btn" data-id="'+b.id+'" style="margin-top:5px;">Cancel</button>':'') +
         '</td>' +
-        '<td><div>' + b.session + '</div><div class="sub-text">' + b.duration + ' min</div></td>' +
-        '<td><div style="white-space:nowrap;">' + b.date + '</div><div class="sub-text">' + b.time + ' PHT</div></td>' +
-        '<td><span class="pill ' + (isConfirmed ? "pill-green" : "pill-red") + '">' + b.status + '</span></td>' +
+        '<td><div>'+b.session+'</div><div class="sub-text">'+b.duration+' min</div></td>' +
+        '<td style="white-space:nowrap;"><div>'+b.date+'</div><div class="sub-text">'+b.time+' PHT</div></td>' +
+        '<td><span class="pill '+(ok?"pill-green":"pill-red")+'">'+b.status+'</span></td>' +
         '</tr>';
-    }).join("") +
+    }).join("")+
     '</tbody></table></div>';
 
-  // Wire cancel buttons
-  document.getElementById("admin-body").querySelectorAll(".cancel-btn").forEach(function(btn) {
-    btn.addEventListener("click", async function() {
-      var id = this.getAttribute("data-id");
-      if (!confirm("Cancel booking " + id + "?")) return;
-      this.textContent = "Cancelling…";
-      this.disabled = true;
+  document.getElementById("admin-body").querySelectorAll(".cancel-btn").forEach(function(btn){
+    btn.addEventListener("click",async function(){
+      var id=this.getAttribute("data-id");
+      if (!confirm("Cancel booking "+id+"?")) return;
+      this.textContent="Cancelling…"; this.disabled=true;
       try {
-        var res  = await fetch(SCRIPT_URL, { method:"POST", body:JSON.stringify({ action:"cancel", bookingId:id }) });
+        var res  = await fetch(SCRIPT_URL,{method:"POST",body:JSON.stringify({action:"cancel",bookingId:id})});
         var json = await res.json();
-        if (json.success) {
-          loadAdmin();
-        } else {
-          alert("Could not cancel: " + (json.error || "Unknown error."));
-        }
-      } catch(e) {
-        alert("Network error.");
-      }
+        if (json.success) { loadAdmin(); }
+        else alert("Could not cancel: "+(json.error||"Unknown."));
+      } catch(e){ alert("Network error."); }
     });
   });
 }
 
-/* ════════════════════════════════
-   BOOT
-════════════════════════════════ */
+/* ════ BOOT ════ */
 loadSlots();
 </script>
 </body>
