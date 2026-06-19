@@ -7,21 +7,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
-
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --clay:     #c97a5e;
-      --clay-dk:  #9b4f38;
-      --clay-lt:  #fdf4f0;
-      --gold:     #c4943a;
-      --cream:    #fff9f4;
-      --text:     #2c2420;
-      --muted:    #6b5850;
-      --border:   rgba(196,148,58,0.18);
-      --br-md:    10px;
-      --br-lg:    16px;
+      --clay:    #c97a5e;
+      --clay-dk: #9b4f38;
+      --clay-lt: #fdf4f0;
+      --text:    #2c2420;
+      --muted:   #6b5850;
+      --border:  rgba(196,148,58,0.2);
+      --br-md:   10px;
+      --br-lg:   16px;
     }
 
     body {
@@ -32,12 +29,9 @@
       padding: 24px 16px 60px;
     }
 
-    #app {
-      max-width: 540px;
-      margin: 0 auto;
-    }
+    #app { max-width: 540px; margin: 0 auto; }
 
-    /* ── HERO ── */
+    /* HERO */
     .hero {
       background: linear-gradient(135deg, #c97a5e 0%, #9b4f38 100%);
       border-radius: var(--br-lg);
@@ -57,11 +51,11 @@
       border-radius: 50%;
       pointer-events: none;
     }
-    .hero-ornament { font-size: 12px; letter-spacing: 8px; opacity: 0.45; margin-bottom: 10px; }
-    .hero h1 { font-family: 'Lora', serif; font-size: 26px; font-weight: 400; letter-spacing: -0.01em; }
-    .hero p  { font-size: 11px; opacity: 0.65; letter-spacing: 0.14em; text-transform: uppercase; margin-top: 7px; }
+    .hero-orn { font-size: 12px; letter-spacing: 8px; opacity: 0.45; margin-bottom: 10px; }
+    .hero h1  { font-family: 'Lora', serif; font-size: 26px; font-weight: 400; }
+    .hero p   { font-size: 11px; opacity: 0.65; letter-spacing: 0.14em; text-transform: uppercase; margin-top: 7px; }
 
-    /* ── TAB NAV ── */
+    /* TABS */
     .tab-nav {
       display: flex; gap: 4px;
       background: #f0e8e2;
@@ -78,11 +72,15 @@
     .tab-btn.active { background: white; color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
     .tab-btn i { font-size: 15px; }
 
-    /* ── VIEWS ── */
+    /* VIEWS */
     .view { display: none; }
     .view.active { display: block; }
 
-    /* ── LABELS & FIELDS ── */
+    /* STEPS */
+    .step { display: none; }
+    .step.active { display: block; }
+
+    /* LABELS */
     .label {
       display: block; font-size: 11px; font-weight: 500;
       color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;
@@ -104,55 +102,57 @@
     }
     .field textarea { height: 84px; resize: none; }
 
-    /* ── SLOT GRID ── */
-    .week-label {
+    /* WEEK LABEL */
+    .week-lbl {
       font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
       color: var(--muted); margin: 14px 0 8px;
     }
-    .week-label:first-child { margin-top: 0; }
-    .slot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
+    .week-lbl:first-child { margin-top: 0; }
+
+    /* SLOT CARDS */
+    .slot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .slot-card {
       border: 1px solid var(--border); border-radius: var(--br-md);
       padding: 14px 13px; cursor: pointer; transition: all 0.16s;
-      background: white; position: relative;
+      background: white; position: relative; user-select: none;
     }
-    .slot-card:hover:not(.taken) { border-color: var(--clay); box-shadow: 0 2px 8px rgba(201,122,94,0.14); }
-    .slot-card.selected { border: 2px solid var(--clay); background: var(--clay-lt); }
-    .slot-card.taken    { opacity: 0.38; pointer-events: none; }
-    .slot-card .s-day   { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 3px; }
-    .slot-card .s-time  { font-size: 15px; font-weight: 500; color: var(--text); }
-    .slot-card .s-date  { font-size: 12px; color: var(--muted); margin-top: 2px; }
-    .slot-card .s-badge {
+    .slot-card:hover         { border-color: var(--clay); box-shadow: 0 2px 8px rgba(201,122,94,0.14); }
+    .slot-card.selected      { border: 2px solid var(--clay); background: var(--clay-lt); }
+    .slot-card.taken         { opacity: 0.38; pointer-events: none; cursor: default; }
+    .slot-card .sc-day       { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 3px; }
+    .slot-card .sc-time      { font-size: 15px; font-weight: 500; color: var(--text); }
+    .slot-card .sc-date      { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .slot-card .sc-badge     {
       position: absolute; top: 9px; right: 9px;
       font-size: 10px; padding: 2px 7px; border-radius: 99px; font-weight: 500;
     }
-    .badge-open   { background: #eaf6f1; color: #0f6e56; }
-    .badge-taken  { background: #fceaea; color: #a32d2d; }
+    .badge-open  { background: #eaf6f1; color: #0f6e56; }
+    .badge-taken { background: #fceaea; color: #a32d2d; }
 
-    /* ── SESSION GRID ── */
+    /* SESSION CARDS */
     .session-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
     .session-card {
       border: 1px solid var(--border); border-radius: var(--br-md);
-      padding: 14px 13px; cursor: pointer; transition: all 0.16s; background: white;
+      padding: 14px 13px; cursor: pointer; transition: all 0.16s;
+      background: white; user-select: none;
     }
-    .session-card:hover { border-color: var(--clay); }
+    .session-card:hover    { border-color: var(--clay); }
     .session-card.selected { border: 2px solid var(--clay); background: var(--clay-lt); }
-    .session-card i     { font-size: 20px; color: var(--clay); margin-bottom: 7px; display: block; }
-    .session-card .s-name { font-size: 13px; font-weight: 500; color: var(--text); }
-    .session-card .s-dur  { font-size: 11px; color: var(--muted); margin-top: 3px; }
+    .session-card i        { font-size: 20px; color: var(--clay); margin-bottom: 7px; display: block; }
+    .session-card .ss-name { font-size: 13px; font-weight: 500; color: var(--text); }
+    .session-card .ss-dur  { font-size: 11px; color: var(--muted); margin-top: 3px; }
 
-    /* ── BUTTONS ── */
+    /* BUTTONS */
     .btn-primary {
       width: 100%; padding: 14px; font-size: 14px; font-weight: 500;
       background: linear-gradient(135deg, #c97a5e, #9b4f38);
       color: white; border: none; border-radius: var(--br-md);
-      cursor: pointer; letter-spacing: 0.02em;
+      cursor: pointer; font-family: 'Inter', sans-serif;
       transition: opacity 0.15s, transform 0.1s;
-      font-family: 'Inter', sans-serif;
       display: flex; align-items: center; justify-content: center; gap: 8px;
     }
     .btn-primary:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
-    .btn-primary:active { transform: translateY(0); }
+    .btn-primary:active  { transform: translateY(0); }
     .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 
     .btn-ghost {
@@ -160,24 +160,25 @@
       background: transparent; color: var(--muted);
       border: 1px solid var(--border); border-radius: var(--br-md);
       cursor: pointer; margin-top: 8px; font-family: 'Inter', sans-serif;
-      transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 6px;
+      transition: all 0.15s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
     }
     .btn-ghost:hover { background: #f5ede8; border-color: var(--clay); }
 
-    /* ── SUMMARY ── */
+    /* SUMMARY */
     .summary-card {
       background: #fdf4f0; border: 1px solid var(--border);
       border-radius: var(--br-md); overflow: hidden; margin-bottom: 18px;
     }
-    .summary-row {
+    .sum-row {
       display: flex; justify-content: space-between; align-items: flex-start;
       padding: 10px 16px; border-bottom: 1px solid var(--border);
     }
-    .summary-row:last-child { border-bottom: none; }
-    .summary-row .sk { font-size: 12px; color: var(--muted); white-space: nowrap; margin-right: 12px; }
-    .summary-row .sv { font-size: 13px; font-weight: 500; color: var(--text); text-align: right; }
+    .sum-row:last-child { border-bottom: none; }
+    .sum-row .sk { font-size: 12px; color: var(--muted); white-space: nowrap; margin-right: 12px; }
+    .sum-row .sv { font-size: 13px; font-weight: 500; color: var(--text); text-align: right; }
 
-    /* ── VERSE ── */
+    /* VERSE */
     .verse {
       background: rgba(201,122,94,0.07);
       border-left: 3px solid #e8c4b0;
@@ -192,35 +193,38 @@
       color: var(--clay); font-weight: 500; margin-top: 6px; display: block;
     }
 
-    /* ── SUCCESS ── */
+    /* SUCCESS */
     .success-wrap { text-align: center; padding: 16px 0 8px; }
     .success-circle {
       width: 76px; height: 76px; border-radius: 50%;
       background: linear-gradient(135deg, #c97a5e, #9b4f38);
       display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 18px; color: white; font-size: 34px;
+      margin: 0 auto 18px; color: white;
     }
     .success-circle i { font-size: 34px; }
-    .success-h { font-family: 'Lora', serif; font-size: 24px; font-weight: 400; margin-bottom: 8px; }
+    .success-h   { font-family: 'Lora', serif; font-size: 24px; font-weight: 400; margin-bottom: 8px; }
     .success-sub { font-size: 13px; color: var(--muted); line-height: 1.6; }
-    .booking-id {
+    .booking-id  {
       display: inline-block; margin-top: 14px;
       font-size: 11px; letter-spacing: 0.1em; color: var(--muted);
       background: #f0e8e2; padding: 6px 16px; border-radius: 99px;
     }
 
-    /* ── LOADING / EMPTY ── */
+    /* STATES */
     .loading-state, .empty-state {
       text-align: center; padding: 36px 0; color: var(--muted); font-size: 13px;
     }
-    .spin {
-      display: inline-block; animation: spin 1s linear infinite;
-    }
     @keyframes spin { to { transform: rotate(360deg); } }
+    .spin { display: inline-block; animation: spin 1s linear infinite; }
 
-    /* ── ADMIN ── */
+    /* ADMIN */
     .admin-login { max-width: 300px; margin: 8px auto 0; }
-    .err { color: #a32d2d; font-size: 12px; margin-top: 6px; display: none; }
+    .err-msg { color: #a32d2d; font-size: 12px; margin-top: 6px; display: none; }
+
+    .admin-hdr {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
+    }
+    .admin-hdr span { font-size: 15px; font-weight: 500; }
 
     .filter-bar { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
     .filter-btn {
@@ -230,9 +234,6 @@
       transition: all 0.14s;
     }
     .filter-btn.active { background: var(--clay); color: white; border-color: var(--clay); }
-
-    .admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
-    .admin-header span { font-size: 15px; font-weight: 500; }
 
     .tbl-wrap { overflow-x: auto; border-radius: var(--br-md); border: 1px solid var(--border); }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
@@ -245,14 +246,11 @@
     tbody td { padding: 10px 13px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
     tbody tr:last-child td { border-bottom: none; }
     tbody tr:hover td { background: #fdf8f3; }
-
     .pill { display: inline-block; padding: 3px 9px; border-radius: 99px; font-size: 11px; font-weight: 500; }
     .pill-green { background: #eaf6f1; color: #0a5c42; }
     .pill-red   { background: #fceaea; color: #8a2020; }
+    .sub-text   { font-size: 11px; color: var(--muted); margin-top: 2px; }
 
-    .sub-text { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-    /* ── RESPONSIVE ── */
     @media (max-width: 400px) {
       .slot-grid, .session-grid { grid-template-columns: 1fr; }
       body { padding: 16px 12px 48px; }
@@ -263,468 +261,455 @@
 <div id="app">
 
   <div class="hero">
-    <div class="hero-ornament">✦ ✦ ✦</div>
+    <div class="hero-orn">✦ ✦ ✦</div>
     <h1>DGroup 1-on-1</h1>
     <p>Book a session with Chari</p>
   </div>
 
   <div class="tab-nav">
-    <button class="tab-btn active" id="tab-book" onclick="showTab('book')">
-      <i class="ti ti-calendar"></i> Book a slot
-    </button>
-    <button class="tab-btn" id="tab-admin" onclick="showTab('admin-gate')">
-      <i class="ti ti-settings"></i> Admin
-    </button>
+    <button class="tab-btn active" id="tab-book"><i class="ti ti-calendar"></i> Book a slot</button>
+    <button class="tab-btn"        id="tab-admin"><i class="ti ti-settings"></i> Admin</button>
   </div>
 
-  <!-- ══ BOOKING VIEW ══ -->
+  <!-- BOOKING VIEW -->
   <div id="view-book" class="view active">
 
-    <!-- Step 1 -->
-    <div id="step-1">
+    <div id="step-1" class="step active">
       <div class="field">
         <span class="label">Choose a time slot</span>
         <div id="slot-loading" class="loading-state"><i class="ti ti-loader spin"></i> Checking availability…</div>
         <div id="slot-container" style="display:none;"></div>
       </div>
-
       <div class="field">
         <span class="label">Your name</span>
         <input type="text" id="inp-name" placeholder="Full name" autocomplete="name" />
       </div>
-
       <div class="field">
         <span class="label">Email address</span>
         <input type="email" id="inp-email" placeholder="your@email.com" autocomplete="email" />
       </div>
-
       <div class="field">
         <span class="label">Session type</span>
         <div class="session-grid" id="session-grid"></div>
       </div>
-
       <div class="field">
         <span class="label">Prayer intention <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:11px;opacity:0.7;">(optional)</span></span>
         <textarea id="inp-note" placeholder="Share anything you'd like Chari to pray over or talk through…"></textarea>
       </div>
-
-      <button class="btn-primary" onclick="goReview()">
+      <button class="btn-primary" id="btn-review">
         Review booking <i class="ti ti-arrow-right"></i>
       </button>
     </div>
 
-    <!-- Step 2 – Review -->
-    <div id="step-2" style="display:none;">
+    <div id="step-2" class="step">
       <span class="label">Review your booking</span>
       <div class="summary-card" id="summary-card"></div>
       <div class="verse">
         "For where two or three gather in my name, there am I with them."
         <span class="verse-ref">Matthew 18:20 · NIV</span>
       </div>
-      <button class="btn-primary" id="btn-confirm" onclick="submitBooking()">
+      <button class="btn-primary" id="btn-confirm">
         <i class="ti ti-send"></i> Confirm &amp; send
       </button>
-      <button class="btn-ghost" onclick="goBack()">
+      <button class="btn-ghost" id="btn-back">
         <i class="ti ti-arrow-left"></i> Go back
       </button>
     </div>
 
-    <!-- Step 3 – Success -->
-    <div id="step-3" style="display:none;">
+    <div id="step-3" class="step">
       <div class="success-wrap">
         <div class="success-circle"><i class="ti ti-check"></i></div>
         <p class="success-h">You're booked! 🌸</p>
         <p class="success-sub">Check your email for a confirmation<br>and calendar invite from Chari.</p>
         <div class="booking-id" id="booking-id-display"></div>
-        <div class="verse" style="text-align:left; margin-top:22px;">
+        <div class="verse" style="text-align:left;margin-top:22px;">
           "For where two or three gather in my name, there am I with them."
           <span class="verse-ref">Matthew 18:20 · NIV</span>
         </div>
-        <button class="btn-ghost" style="margin-top:6px;" onclick="resetForm()">
+        <button class="btn-ghost" id="btn-another">
           <i class="ti ti-plus"></i> Book another session
         </button>
       </div>
     </div>
 
-  </div><!-- /view-book -->
+  </div>
 
-  <!-- ══ ADMIN LOGIN VIEW ══ -->
-  <div id="view-admin-gate" class="view" style="display:none;">
+  <!-- ADMIN GATE -->
+  <div id="view-admin-gate" class="view">
     <div class="admin-login">
       <div class="field">
         <span class="label">Admin password</span>
-        <input type="password" id="inp-pw" placeholder="Enter password"
-               onkeydown="if(event.key==='Enter') adminLogin()" />
-        <div class="err" id="pw-err">Incorrect password. Please try again.</div>
+        <input type="password" id="inp-pw" placeholder="Enter password" />
+        <div class="err-msg" id="pw-err">Incorrect password. Please try again.</div>
       </div>
-      <button class="btn-primary" onclick="adminLogin()">
+      <button class="btn-primary" id="btn-login">
         <i class="ti ti-lock-open"></i> Sign in
       </button>
     </div>
   </div>
 
-  <!-- ══ ADMIN DASHBOARD VIEW ══ -->
-  <div id="view-admin" class="view" style="display:none;">
-    <div class="admin-header">
+  <!-- ADMIN DASHBOARD -->
+  <div id="view-admin" class="view">
+    <div class="admin-hdr">
       <span>All Bookings</span>
-      <button class="btn-ghost" style="width:auto;padding:7px 14px;font-size:12px;margin-top:0;" onclick="loadAdmin()">
+      <button class="btn-ghost" id="btn-refresh" style="width:auto;padding:7px 14px;font-size:12px;margin-top:0;">
         <i class="ti ti-refresh"></i> Refresh
       </button>
     </div>
     <div class="filter-bar">
-      <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
-      <button class="filter-btn" onclick="setFilter('Confirmed',this)">Confirmed</button>
-      <button class="filter-btn" onclick="setFilter('Cancelled',this)">Cancelled</button>
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="Confirmed">Confirmed</button>
+      <button class="filter-btn" data-filter="Cancelled">Cancelled</button>
     </div>
     <div id="admin-body"><div class="loading-state"><i class="ti ti-loader spin"></i> Loading…</div></div>
-    <button class="btn-ghost" style="margin-top:18px;" onclick="adminLogout()">
+    <button class="btn-ghost" id="btn-logout" style="margin-top:18px;">
       <i class="ti ti-logout"></i> Sign out
     </button>
   </div>
 
-</div><!-- /app -->
+</div>
 
 <script>
+"use strict";
+
 /* ── CONFIG ── */
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzL5UCzFF_bHfurfRGguqy1j1MWc4IWx8pduwJqeLvP3UYldKQGRmuTJ17sI65LE6G2/exec";
 const ADMIN_PW   = "selah2024";
 
 const SESSIONS = [
   { name: "Discipleship Check-in", icon: "ti-heart",      dur: 30 },
-  { name: "Prayer & Intercession",  icon: "ti-hand-stop", dur: 30 },
-  { name: "Life Coaching",          icon: "ti-bulb",       dur: 45 },
-  { name: "Bible Study",            icon: "ti-book",       dur: 45 },
+  { name: "Prayer & Intercession", icon: "ti-hand-stop",  dur: 30 },
+  { name: "Life Coaching",         icon: "ti-bulb",        dur: 45 },
+  { name: "Bible Study",           icon: "ti-book",        dur: 45 },
 ];
 
-/* ── STATE ── */
-let state = {
-  slot:        null,
-  sessionIdx:  null,
-  takenKeys:   new Set(),   // "date|time" strings for confirmed bookings
-  allBookings: [],
-  adminFilter: "all",
-  slots:       [],          // master slot list, indexed by position
+/* ── APP STATE ── */
+const S = {
+  slots:       [],    // array of {day, time, date}
+  takenKeys:   new Set(),
+  selectedSlot: null, // index into S.slots
+  selectedSess: null, // index into SESSIONS
+  allBookings:  [],
+  adminFilter:  "all",
 };
 
-/* ── SLOT HELPERS ── */
-function getUpcomingSlots() {
-  const slots = [];
-  const today = new Date(); today.setHours(0,0,0,0);
-  const d = new Date(today);
+/* ── DATE HELPERS ── */
+function buildUpcomingSlots() {
+  const result = [];
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
   let safety = 0;
-  while (slots.length < 10 && safety++ < 90) {
+  while (result.length < 10 && safety++ < 90) {
     const dow = d.getDay();
-    if (dow === 5) slots.push({ day:"Friday",  time:"1:00 PM",  date: new Date(d) });
-    if (dow === 0) slots.push({ day:"Sunday",  time:"9:00 PM",  date: new Date(d) });
+    if (dow === 5) result.push({ day: "Friday", time: "1:00 PM",  date: new Date(d) });
+    if (dow === 0) result.push({ day: "Sunday", time: "9:00 PM", date: new Date(d) });
     d.setDate(d.getDate() + 1);
   }
-  return slots;
+  return result;
 }
 
-function formatDate(d) {
+function fmtDate(d) {
   return d.toLocaleDateString("en-PH", {
     weekday: "long", month: "long", day: "numeric", year: "numeric"
   });
 }
 
-function slotKey(slot) {
-  return formatDate(slot.date) + "|" + slot.time;
+function fmtShort(d) {
+  return d.toLocaleDateString("en-PH", { month: "short", day: "numeric" });
 }
 
-/* ── JSONP FETCH ── */
+function slotKey(slot) {
+  return fmtDate(slot.date) + "|" + slot.time;
+}
+
+/* ── JSONP ── */
 function jsonpGet(url) {
   return new Promise((resolve, reject) => {
-    const cbName = "_cb" + Date.now() + Math.floor(Math.random()*1000);
+    const id     = "_cb" + Date.now() + Math.floor(Math.random() * 9999);
     const script = document.createElement("script");
-    const timer  = setTimeout(() => {
-      cleanup(); reject(new Error("Request timed out"));
-    }, 10000);
+    const timer  = setTimeout(() => { cleanup(); reject(new Error("Timeout")); }, 10000);
 
     function cleanup() {
       clearTimeout(timer);
-      delete window[cbName];
+      delete window[id];
       if (script.parentNode) script.parentNode.removeChild(script);
     }
 
-    window[cbName] = (data) => { cleanup(); resolve(data); };
-    script.onerror  = () => { cleanup(); reject(new Error("Script load error")); };
-    script.src      = url + (url.includes("?") ? "&" : "?") + "callback=" + cbName;
+    window[id]    = (data) => { cleanup(); resolve(data); };
+    script.onerror = ()    => { cleanup(); reject(new Error("Load error")); };
+    script.src     = url + (url.includes("?") ? "&" : "?") + "callback=" + id;
     document.head.appendChild(script);
   });
 }
 
-/* ── LOAD SLOTS ── */
+/* ── RENDER SLOTS ── */
+function renderSlots() {
+  const container = document.getElementById("slot-container");
+  const fridays   = S.slots.map((s, i) => ({ s, i })).filter(x => x.s.day === "Friday");
+  const sundays   = S.slots.map((s, i) => ({ s, i })).filter(x => x.s.day === "Sunday");
+
+  function group(list, label) {
+    let html = '<p class="week-lbl">' + label + '</p><div class="slot-grid">';
+    list.forEach(({ s, i }) => {
+      const taken  = S.takenKeys.has(slotKey(s));
+      const chosen = S.selectedSlot === i;
+      html += '<div class="slot-card' +
+        (taken  ? ' taken'    : '') +
+        (chosen ? ' selected' : '') +
+        '" data-slot-idx="' + i + '">' +
+        '<div class="sc-day">'  + s.day            + '</div>' +
+        '<div class="sc-time">' + s.time           + '</div>' +
+        '<div class="sc-date">' + fmtShort(s.date) + '</div>' +
+        '<span class="sc-badge ' + (taken ? 'badge-taken' : 'badge-open') + '">' +
+        (taken ? 'Taken' : 'Open') + '</span>' +
+        '</div>';
+    });
+    html += '</div>';
+    return html;
+  }
+
+  container.innerHTML =
+    group(fridays, 'Fridays · 1:00–2:00 PM PHT') +
+    group(sundays, 'Sundays · 9:00–10:00 PM PHT');
+
+  /* Attach click listeners directly to each card */
+  container.querySelectorAll('.slot-card:not(.taken)').forEach(function(card) {
+    card.addEventListener('click', function() {
+      S.selectedSlot = parseInt(this.getAttribute('data-slot-idx'), 10);
+      renderSlots();
+    });
+  });
+}
+
+/* ── RENDER SESSIONS ── */
+function renderSessions() {
+  const grid = document.getElementById("session-grid");
+  grid.innerHTML = SESSIONS.map(function(s, i) {
+    return '<div class="session-card' + (S.selectedSess === i ? ' selected' : '') +
+      '" data-sess-idx="' + i + '">' +
+      '<i class="ti ' + s.icon + '"></i>' +
+      '<div class="ss-name">' + s.name + '</div>' +
+      '<div class="ss-dur">'  + s.dur  + ' min</div>' +
+      '</div>';
+  }).join('');
+
+  grid.querySelectorAll('.session-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      S.selectedSess = parseInt(this.getAttribute('data-sess-idx'), 10);
+      renderSessions();
+    });
+  });
+}
+
+/* ── LOAD SLOTS FROM SHEET ── */
 async function loadSlots() {
   document.getElementById("slot-loading").style.display   = "block";
   document.getElementById("slot-container").style.display = "none";
 
-  // Build and store the master slot list once
-  state.slots = getUpcomingSlots();
+  S.slots = buildUpcomingSlots();
 
   try {
     const res = await jsonpGet(SCRIPT_URL + "?action=getBookings");
     if (res.success) {
-      state.takenKeys = new Set(
+      S.takenKeys = new Set(
         (res.bookings || [])
           .filter(b => b.status !== "Cancelled")
           .map(b => b.date + "|" + b.time)
       );
     }
   } catch (e) {
-    // Silently continue — slots will all show as open
-    console.warn("Could not load bookings:", e);
+    console.warn("Could not fetch bookings:", e);
   }
 
-  renderSlots();
   document.getElementById("slot-loading").style.display   = "none";
   document.getElementById("slot-container").style.display = "block";
-  renderSessions();
-}
-
-/* ── RENDER SLOTS ── */
-function renderSlots() {
-  const slots   = state.slots;
-  const fridays = slots.map((s,i) => ({s,i})).filter(({s}) => s.day === "Friday");
-  const sundays = slots.map((s,i) => ({s,i})).filter(({s}) => s.day === "Sunday");
-
-  function renderGroup(list) {
-    return '<div class="slot-grid">' + list.map(({s, i}) => {
-      const key    = slotKey(s);
-      const taken  = state.takenKeys.has(key);
-      const chosen = state.slot !== null && state.slot === i;
-      return `
-        <div class="slot-card${taken ? " taken" : ""}${chosen ? " selected" : ""}"
-             onclick="selectSlot(${i})">
-          <div class="s-day">${s.day}</div>
-          <div class="s-time">${s.time}</div>
-          <div class="s-date">${s.date.toLocaleDateString("en-PH",{month:"short",day:"numeric"})}</div>
-          <span class="s-badge ${taken ? "badge-taken" : "badge-open"}">${taken ? "Taken" : "Open"}</span>
-        </div>`;
-    }).join("") + "</div>";
-  }
-
-  document.getElementById("slot-container").innerHTML =
-    '<p class="week-label">Fridays · 1:00–2:00 PM PHT</p>'  + renderGroup(fridays) +
-    '<p class="week-label" style="margin-top:14px;">Sundays · 9:00–10:00 PM PHT</p>' + renderGroup(sundays);
-}
-
-/* ── RENDER SESSIONS ── */
-function renderSessions() {
-  document.getElementById("session-grid").innerHTML = SESSIONS.map((s, i) => `
-    <div class="session-card${state.sessionIdx === i ? " selected" : ""}" onclick="selectSession(${i})">
-      <i class="ti ${s.icon}"></i>
-      <div class="s-name">${s.name}</div>
-      <div class="s-dur">${s.dur} min</div>
-    </div>`
-  ).join("");
-}
-
-/* ── SLOT / SESSION SELECTION ── */
-function selectSlot(i) {
-  state.slot = i;   // store the index, not the object
   renderSlots();
-}
-
-function getSelectedSlot() {
-  return state.slots[state.slot];
-}
-
-function selectSession(i) {
-  state.sessionIdx = i;
   renderSessions();
 }
 
-/* ── STEP NAVIGATION ── */
-function goReview() {
-  const name  = document.getElementById("inp-name").value.trim();
-  const email = document.getElementById("inp-email").value.trim();
-  const slot  = getSelectedSlot();
-
-  if (state.slot === null)                return alert("Please choose a time slot.");
-  if (!name)                              return alert("Please enter your name.");
-  if (!email || !email.includes("@"))     return alert("Please enter a valid email address.");
-  if (state.sessionIdx === null)          return alert("Please choose a session type.");
-
-  const sess = SESSIONS[state.sessionIdx];
-  document.getElementById("summary-card").innerHTML = [
-    row("Name",     name),
-    row("Email",    email),
-    row("Session",  sess.name),
-    row("Date",     formatDate(slot.date)),
-    row("Time",     slot.time + " Manila (PHT)"),
-    row("Duration", sess.dur + " minutes"),
-    document.getElementById("inp-note").value.trim()
-      ? row("Prayer note", `<em>${document.getElementById("inp-note").value.trim()}</em>`)
-      : "",
-  ].join("");
-
-  show("step-2");
+/* ── SHOW STEP ── */
+function showStep(id) {
+  document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
 
-function goBack() { show("step-1"); }
+/* ── SHOW TAB VIEW ── */
+function showView(id) {
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('tab-book').classList.toggle('active',  id === 'view-book');
+  document.getElementById('tab-admin').classList.toggle('active', id !== 'view-book');
+}
 
-/* ── SUBMIT ── */
-async function submitBooking() {
-  const btn   = document.getElementById("btn-confirm");
-  const name  = document.getElementById("inp-name").value.trim();
-  const email = document.getElementById("inp-email").value.trim();
-  const note  = document.getElementById("inp-note").value.trim();
-  const sess  = SESSIONS[state.sessionIdx];
-  const slot  = getSelectedSlot();
+/* ── SUMMARY ROW ── */
+function sumRow(k, v) {
+  return '<div class="sum-row"><span class="sk">' + k + '</span><span class="sv">' + v + '</span></div>';
+}
 
-  btn.disabled     = true;
-  btn.innerHTML    = '<i class="ti ti-loader spin"></i> Sending…';
+/* ── WIRE UP BUTTONS ── */
+document.getElementById('tab-book').addEventListener('click', function() {
+  showView('view-book');
+});
 
-  const payload = {
-    action:   "book",
-    name, email, note,
-    date:     formatDate(slot.date),
+document.getElementById('tab-admin').addEventListener('click', function() {
+  showView('view-admin-gate');
+});
+
+document.getElementById('btn-review').addEventListener('click', function() {
+  const name  = document.getElementById('inp-name').value.trim();
+  const email = document.getElementById('inp-email').value.trim();
+
+  if (S.selectedSlot === null) { alert("Please choose a time slot."); return; }
+  if (!name)                   { alert("Please enter your name."); return; }
+  if (!email || !email.includes('@')) { alert("Please enter a valid email address."); return; }
+  if (S.selectedSess === null) { alert("Please choose a session type."); return; }
+
+  const slot = S.slots[S.selectedSlot];
+  const sess = SESSIONS[S.selectedSess];
+  const note = document.getElementById('inp-note').value.trim();
+
+  document.getElementById('summary-card').innerHTML =
+    sumRow('Name',     name) +
+    sumRow('Email',    email) +
+    sumRow('Session',  sess.name) +
+    sumRow('Date',     fmtDate(slot.date)) +
+    sumRow('Time',     slot.time + ' Manila (PHT)') +
+    sumRow('Duration', sess.dur + ' minutes') +
+    (note ? sumRow('Prayer note', '<em>' + note + '</em>') : '');
+
+  showStep('step-2');
+});
+
+document.getElementById('btn-back').addEventListener('click', function() {
+  showStep('step-1');
+});
+
+document.getElementById('btn-confirm').addEventListener('click', async function() {
+  const btn   = this;
+  const name  = document.getElementById('inp-name').value.trim();
+  const email = document.getElementById('inp-email').value.trim();
+  const note  = document.getElementById('inp-note').value.trim();
+  const slot  = S.slots[S.selectedSlot];
+  const sess  = SESSIONS[S.selectedSess];
+
+  btn.disabled   = true;
+  btn.innerHTML  = '<i class="ti ti-loader spin"></i> Sending…';
+
+  const payload = JSON.stringify({
+    action: 'book', name, email, note,
+    date:     fmtDate(slot.date),
     time:     slot.time,
     session:  sess.name,
     duration: sess.dur,
-  };
+  });
 
   try {
-    const res  = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+    const res  = await fetch(SCRIPT_URL, { method: 'POST', body: payload });
     const json = await res.json();
 
     if (json.success) {
-      /* ── Remove the slot immediately so it shows Taken right away ── */
-      state.takenKeys.add(slotKey(slot));
-
-      document.getElementById("booking-id-display").textContent = json.bookingId;
-      show("step-3");
+      S.takenKeys.add(slotKey(slot));   // mark slot taken immediately
+      document.getElementById('booking-id-display').textContent = json.bookingId;
+      showStep('step-3');
     } else {
-      alert("Booking failed: " + (json.error || "Unknown error. Please try again."));
+      alert('Booking failed: ' + (json.error || 'Unknown error.'));
       btn.disabled  = false;
       btn.innerHTML = '<i class="ti ti-send"></i> Confirm &amp; send';
     }
-  } catch (e) {
-    alert("Network error. Please check your connection and try again.");
+  } catch(e) {
+    alert('Network error. Please check your connection and try again.');
     btn.disabled  = false;
     btn.innerHTML = '<i class="ti ti-send"></i> Confirm &amp; send';
   }
-}
+});
 
-/* ── RESET ── */
-function resetForm() {
-  state.slot       = null;
-  state.sessionIdx = null;
-  document.getElementById("inp-name").value  = "";
-  document.getElementById("inp-email").value = "";
-  document.getElementById("inp-note").value  = "";
-  show("step-1");
+document.getElementById('btn-another').addEventListener('click', function() {
+  S.selectedSlot = null;
+  S.selectedSess = null;
+  document.getElementById('inp-name').value  = '';
+  document.getElementById('inp-email').value = '';
+  document.getElementById('inp-note').value  = '';
+  showStep('step-1');
   renderSlots();
   renderSessions();
-}
+});
 
-/* ── TABS ── */
-function showTab(name) {
-  ["book","admin-gate","admin"].forEach(id => {
-    const el = document.getElementById("view-" + id);
-    if (el) { el.style.display = "none"; el.classList.remove("active"); }
-  });
-  const target = document.getElementById("view-" + name);
-  if (target) { target.style.display = "block"; target.classList.add("active"); }
-
-  document.getElementById("tab-book").classList.toggle("active",  name === "book");
-  document.getElementById("tab-admin").classList.toggle("active", name !== "book");
-}
-
-/* ── ADMIN LOGIN ── */
-function adminLogin() {
-  const pw  = document.getElementById("inp-pw").value;
-  const err = document.getElementById("pw-err");
+/* ── ADMIN ── */
+document.getElementById('btn-login').addEventListener('click', function() {
+  const pw  = document.getElementById('inp-pw').value;
+  const err = document.getElementById('pw-err');
   if (pw === ADMIN_PW) {
-    err.style.display = "none";
-    showTab("admin");
+    err.style.display = 'none';
+    showView('view-admin');
     loadAdmin();
   } else {
-    err.style.display = "block";
+    err.style.display = 'block';
   }
-}
+});
 
-function adminLogout() {
-  document.getElementById("inp-pw").value = "";
-  showTab("admin-gate");
-}
+document.getElementById('inp-pw').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') document.getElementById('btn-login').click();
+});
 
-/* ── ADMIN DATA ── */
-let adminFilter = "all";
-function setFilter(f, btn) {
-  adminFilter = f;
-  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
-  renderAdminTable();
-}
+document.getElementById('btn-logout').addEventListener('click', function() {
+  document.getElementById('inp-pw').value = '';
+  showView('view-admin-gate');
+});
+
+document.getElementById('btn-refresh').addEventListener('click', loadAdmin);
+
+document.querySelectorAll('.filter-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    S.adminFilter = this.getAttribute('data-filter');
+    renderAdminTable();
+  });
+});
 
 async function loadAdmin() {
-  document.getElementById("admin-body").innerHTML =
+  document.getElementById('admin-body').innerHTML =
     '<div class="loading-state"><i class="ti ti-loader spin"></i> Loading…</div>';
   try {
-    const res = await jsonpGet(SCRIPT_URL + "?action=getBookings");
+    const res = await jsonpGet(SCRIPT_URL + '?action=getBookings');
     if (res.success) {
-      state.allBookings = res.bookings || [];
+      S.allBookings = res.bookings || [];
       renderAdminTable();
     } else {
-      document.getElementById("admin-body").innerHTML =
+      document.getElementById('admin-body').innerHTML =
         '<div class="empty-state">Could not load bookings.</div>';
     }
-  } catch (e) {
-    document.getElementById("admin-body").innerHTML =
-      '<div class="empty-state">Error loading data. Make sure the Apps Script is deployed and accessible.</div>';
+  } catch(e) {
+    document.getElementById('admin-body').innerHTML =
+      '<div class="empty-state">Error loading data. Make sure the Apps Script is deployed.</div>';
   }
 }
 
 function renderAdminTable() {
-  const list = adminFilter === "all"
-    ? state.allBookings
-    : state.allBookings.filter(b => b.status === adminFilter);
+  const list = S.adminFilter === 'all'
+    ? S.allBookings
+    : S.allBookings.filter(b => b.status === S.adminFilter);
 
   if (!list.length) {
-    document.getElementById("admin-body").innerHTML =
+    document.getElementById('admin-body').innerHTML =
       '<div class="empty-state">No bookings found.</div>';
     return;
   }
 
-  const sorted = [...list].sort((a, b) => {
-    const da = new Date(a.date), db = new Date(b.date);
-    return da - db;
-  });
+  const sorted = list.slice().sort((a, b) => new Date(a.date) - new Date(b.date));
 
-  document.getElementById("admin-body").innerHTML =
+  document.getElementById('admin-body').innerHTML =
     '<div class="tbl-wrap"><table>' +
-    '<thead><tr><th>Member</th><th>Session</th><th>Date &amp; Time</th><th>Status</th></tr></thead>' +
-    '<tbody>' +
-    sorted.map(b => `
-      <tr>
-        <td>
-          <div style="font-weight:500;">${b.name}</div>
-          <div class="sub-text">${b.email}</div>
-        </td>
-        <td>
-          <div>${b.session}</div>
-          <div class="sub-text">${b.duration} min</div>
-        </td>
-        <td style="white-space:nowrap;">
-          <div>${b.date}</div>
-          <div class="sub-text">${b.time} PHT</div>
-        </td>
-        <td><span class="pill ${b.status==="Confirmed" ? "pill-green" : "pill-red"}">${b.status}</span></td>
-      </tr>`).join("") +
+    '<thead><tr><th>Member</th><th>Session</th><th>Date &amp; Time</th><th>Status</th></tr></thead><tbody>' +
+    sorted.map(b =>
+      '<tr>' +
+      '<td><div style="font-weight:500;">' + b.name  + '</div><div class="sub-text">' + b.email   + '</div></td>' +
+      '<td><div>' + b.session + '</div><div class="sub-text">' + b.duration + ' min</div></td>' +
+      '<td><div style="white-space:nowrap;">' + b.date + '</div><div class="sub-text">' + b.time + ' PHT</div></td>' +
+      '<td><span class="pill ' + (b.status === 'Confirmed' ? 'pill-green' : 'pill-red') + '">' + b.status + '</span></td>' +
+      '</tr>'
+    ).join('') +
     '</tbody></table></div>';
-}
-
-/* ── TINY HELPERS ── */
-function show(stepId) {
-  ["step-1","step-2","step-3"].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.style.display = (id === stepId) ? "block" : "none";
-  });
-}
-
-function row(k, v) {
-  return `<div class="summary-row"><span class="sk">${k}</span><span class="sv">${v}</span></div>`;
 }
 
 /* ── BOOT ── */
